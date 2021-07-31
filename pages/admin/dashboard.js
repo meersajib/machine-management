@@ -1,5 +1,5 @@
 import React from "react";
-
+import {Table} from 'antd'
 // components
 
 import CardLineChart from "components/Cards/CardLineChart.js";

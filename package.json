@@ -5,12 +5,14 @@
   "repository": "https://github.com/meersajib/machine-management",
   "license": "UNLICENSED",
   "contributors": [
-	  "Meer Sajib","Mamun Bhuiyan"
+    "Meer Sajib",
+    "Mamun Bhuiyan"
   ],
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.3",
     "@popperjs/core": "2.9.1",
     "@tailwindcss/forms": "0.2.1",
+    "antd": "^4.16.9",
     "chart.js": "2.9.4",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
