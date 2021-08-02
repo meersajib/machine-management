@@ -16,10 +16,10 @@ export default class AuthService {
 		saveCookie('mcgroups', groups, 1);
 
 	}
-	static logout() {
-		deleteCookie('mctoken');
-		deleteCookie('mcuser');
-		deleteCookie('mcgroups');
+	static logout(context=null) {
+		deleteCookie('mctoken',context);
+		deleteCookie('mcuser',context);
+		deleteCookie('mcgroups',context);
 	}
 
 	static isAuthorized(context, route = '/') {
@@ -42,7 +42,7 @@ export default class AuthService {
 		}
 		console.log('authorized: ' + authorized);
 		if (!authorized) {
-			AuthService.logout()
+			AuthService.logout(context);
 		}
 		return authorized;
 	}

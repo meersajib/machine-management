@@ -12,9 +12,9 @@ const getCookie = (name, context=null) => {
   console.log({ cookies });
 };
 
-const deleteCookie = (name) => {
+const deleteCookie = (name, context=null) => {
 	console.log('deleteCookie',name);
-  destroyCookie(null, name);
+  destroyCookie(context, name);
 };
 
 export { saveCookie, getCookie, deleteCookie };
