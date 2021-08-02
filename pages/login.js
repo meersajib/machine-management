@@ -2,9 +2,14 @@ import React from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 
+import { saveCookie } from 'utils/cookie';
+
 // layout for page
 
 import Auth from 'layouts/Auth.js';
+
+// import service file
+import AuthService from 'services/auth.service';
 
 const Login = () => {
   const {
@@ -13,7 +18,18 @@ const Login = () => {
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log('data', data);
+
+  const onSubmit = async (data) => {
+    saveCookie(`user`, data?.username, 1);
+    saveCookie(`token`, `abccccccccccccc`, 1);
+    try {
+      const loginResponse = await AuthService.login(data);
+      console.log('loginResponseeeeeeee', loginResponse);
+    } catch (error) {
+      console.log('error', error?.response?.data?.message);
+    }
+  };
+
   return (
     <>
       <div className='container mx-auto px-4 h-full'>
