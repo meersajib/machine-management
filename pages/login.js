@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
+import { message } from 'antd';
 
 import { saveCookie } from 'utils/cookie';
 
@@ -19,16 +20,27 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    saveCookie(`user`, data?.username, 1);
-    saveCookie(`token`, `abccccccccccccc`, 1);
-    console.log(`userrrrrrrr`, typeof data.username);
-    console.log(`passsssss`, typeof data.password);
+  const onSubmit = async (payload) => {
+    const key = 'login';
+    message.loading({ content: 'Loading...', key });
+
     try {
-      const loginResponse = await AuthService.login(data);
-      console.log('loginResponseeeeeeee', loginResponse);
+      const response = await AuthService.validate(payload);
+      const data = response?.data;
+
+      if (response?.success && data.token) {
+        data.username = payload?.username;
+        AuthService.login(data);
+
+        location.href = '/';
+
+        message.success({ content: 'Successfully login!', key, duration: 2 });
+      }
     } catch (error) {
-      console.log('error', error?.response?.data?.message);
+      const msg =
+        error?.response?.data?.message ||
+        'Something went working! please try again.';
+      message.error({ content: msg, key, duration: 2 });
     }
   };
 
