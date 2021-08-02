@@ -8,13 +8,17 @@ import PageChange from 'components/PageChange/PageChange.js';
 import 'antd/dist/antd.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'styles/tailwind.css';
+import 'styles/global.css';
+import { Spin } from 'antd';
 
+let loading =false; 
 Router.events.on('routeChangeStart', (url) => {
   document.body.classList.add('body-page-transition');
   ReactDOM.render(
-    <PageChange path={url} />,
+    <PageChange loading={true}/>,
     document.getElementById('page-transition'),
   );
+	
 });
 Router.events.on('routeChangeComplete', () => {
   ReactDOM.unmountComponentAtNode(document.getElementById('page-transition'));
@@ -26,7 +30,9 @@ Router.events.on('routeChangeError', () => {
 });
 
 export default class MyApp extends App {
-  componentDidMount() {}
+  componentDidMount() {
+	}
+
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {};
 
@@ -36,9 +42,9 @@ export default class MyApp extends App {
 
     return { pageProps };
   }
+
   render() {
     const { Component, pageProps } = this.props;
-
     const Layout = Component.layout || (({ children }) => <>{children}</>);
 
     return (
@@ -50,9 +56,9 @@ export default class MyApp extends App {
           />
           <title>Machine Management</title>
         </Head>
-        <Layout>
+				<Layout>
           <Component {...pageProps} />
-        </Layout>
+        </Layout>        
       </React.Fragment>
     );
   }

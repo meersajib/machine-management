@@ -8,6 +8,7 @@ const UserDropdown = () => {
   const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
   const btnDropdownRef = React.createRef();
   const popoverDropdownRef = React.createRef();
+	const [username,setUsername] = React.useState('Hello wrold');
 
   const openDropdownPopover = () => {
     createPopper(btnDropdownRef.current, popoverDropdownRef.current, {
@@ -20,11 +21,13 @@ const UserDropdown = () => {
     setDropdownPopoverShow(false);
   };
 
+
 	const logout=()=>{
 	  AuthService.logout();
 		
 		location.href = '/login';
 	}
+
   return (
     <>
       <a
@@ -32,10 +35,18 @@ const UserDropdown = () => {
         ref={btnDropdownRef}
         onClick={(e) => {
 					e.preventDefault();
-          dropdownPopoverShow ? closeDropdownPopover() : openDropdownPopover();
+          // dropdownPopoverShow ? closeDropdownPopover() : openDropdownPopover();
         }}
+				onMouseEnter={(e)=>{	
+					e.preventDefault();
+					openDropdownPopover();
+				}} 
+				onMouseLeave={(e)=>{
+					e.preventDefault();
+					closeDropdownPopover()
+				}}
       >
-				Shafik
+				{username}
       </a>
       <div
         ref={popoverDropdownRef}
@@ -43,6 +54,14 @@ const UserDropdown = () => {
           (dropdownPopoverShow ? "block " : "hidden ") +
           "bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
         }
+				onMouseEnter={(e)=>{	
+					e.preventDefault();
+					openDropdownPopover();
+				}} 
+				onMouseLeave={(e)=>{
+					e.preventDefault();
+					closeDropdownPopover()
+				}}
       >
         <button
           className={
