@@ -22,6 +22,8 @@ const Login = () => {
   const onSubmit = async (data) => {
     saveCookie(`user`, data?.username, 1);
     saveCookie(`token`, `abccccccccccccc`, 1);
+    console.log(`userrrrrrrr`, typeof data.username);
+    console.log(`passsssss`, typeof data.password);
     try {
       const loginResponse = await AuthService.login(data);
       console.log('loginResponseeeeeeee', loginResponse);
