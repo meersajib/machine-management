@@ -1,9 +1,5 @@
 /* eslint-disable react/jsx-no-target-blank */
 import React from 'react';
-import CardLineChart from 'components/Cards/CardLineChart.js';
-import CardBarChart from 'components/Cards/CardBarChart.js';
-import CardPageVisits from 'components/Cards/CardPageVisits.js';
-import CardSocialTraffic from 'components/Cards/CardSocialTraffic.js';
 import AuthService from 'services/auth.service';
 // layout for page
 
@@ -11,48 +7,62 @@ import Admin from 'layouts/Admin.js';
 
 export default function Index() {
   return (
-    <>
-      <div className='grid grid-flow-col grid-cols-9 grid-rows-3 gap-4'>
-        <div class='rounded-full h-24 w-24 flex items-center justify-center...'>
-          Circle
+    <div className='h-screen'>
+      <div className='grid grid-flow-col grid-cols-6 grid-rows-3 gap-4 place-items-center'>
+        <div className='grid place-items-center'>
+          <div
+            style={{ background: 'green' }}
+            className='w-12 bg-green-700 text-white h-12 rounded-full  border grid place-items-center'>
+            On
+          </div>
+          <button className='700 p-1 px-2 border border-gray-500 mt-1'>
+            M2
+          </button>
         </div>
-        <div class='rounded-full h-24 w-24 flex items-center justify-center...'>
-          Circle
+        <div className='grid place-items-center'>
+          <div className='bg-red-700 w-12 h-12 rounded-full text-white  border grid place-items-center'>
+            Off
+          </div>
+          <button className='700 p-1 px-2 border border-gray-500 mt-1'>
+            M2
+          </button>
         </div>
-        <div class='rounded-full h-24 w-24 flex items-center justify-center...'>
-          Circle
+        <div className='grid place-items-center'>
+          <div
+            style={{ background: 'green' }}
+            className='w-12 bg-green-700 text-white h-12 rounded-full  border grid place-items-center'>
+            On
+          </div>
+          <button className='700 p-1 px-2 border border-gray-500 mt-1'>
+            M2
+          </button>
         </div>
-        <div class='rounded-full h-24 w-24 flex items-center justify-center...'>
-          Circle
+        <div className='grid place-items-center'>
+          <div className='bg-red-700 w-12 h-12 rounded-full text-white  border grid place-items-center'>
+            Off
+          </div>
+          <p>M2</p>
         </div>
-        <div class='rounded-full h-24 w-24 flex items-center justify-center...'>
-          Circle
+        <div className='grid place-items-center'>
+          <div
+            style={{ background: 'green' }}
+            className='w-12 bg-green-700 text-white h-12 rounded-full  border grid place-items-center'>
+            On
+          </div>
+          <button className='700 p-1 px-2 border border-gray-500 mt-1'>
+            M2
+          </button>
         </div>
-        <div class='rounded-full h-24 w-24 flex items-center justify-center...'>
-          Circle
-        </div>
-        <div class='rounded-full h-24 w-24 flex items-center justify-center...'>
-          Circle
-        </div>
-        <div class='rounded-full h-24 w-24 flex items-center justify-center...'>
-          Circle
-        </div>
-        <div class='rounded-full h-24 w-24 flex items-center justify-center...'>
-          Circle
-        </div>
-        <div class='rounded-full h-24 w-24 flex items-center justify-center...'>
-          Circle
+        <div className='grid place-items-center'>
+          <div className='bg-red-700 w-12 h-12 rounded-full text-white  border grid place-items-center'>
+            Off
+          </div>
+          <button className='700 p-1 px-2 border border-gray-500 mt-1'>
+            M2
+          </button>
         </div>
       </div>
-      {/* <div className="flex flex-wrap mt-4">
-        <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-          <CardPageVisits />
-        </div>
-        <div className="w-full xl:w-4/12 px-4">
-          <CardSocialTraffic />
-        </div>
-      </div> */}
-    </>
+    </div>
   );
 }
 
