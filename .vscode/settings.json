@@ -1,3 +1,7 @@
 {
-	"editor.tabSize": 2
+	"editor.tabSize": 2,
+	"editor.defaultFormatter": "vscode.typescript-language-features",
+	"editor.wordWrapColumn": 100,
+	"javascript.preferences.quoteStyle": "single",
+	"typescript.preferences.quoteStyle": "single"
 }
