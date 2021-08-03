@@ -75,22 +75,22 @@ export default function Sidebar(props) {
               </li>
 
               <li className='items-center'>
-                <Link href='/hello'>
+                <Link href='/machine-data'>
                   <a
                     className={
                       'text-xs uppercase py-3 font-bold block ' +
-                      (router.pathname.indexOf('/hello') !== -1
+                      (router.pathname.indexOf('/machine-data') !== -1
                         ? 'text-lightBlue-500 hover:text-lightBlue-600'
                         : 'text-white hover:text-blueGray-500')
                     }>
                     <i
                       className={
                         'fas fa-tools mr-2 text-sm ' +
-                        (router.pathname.indexOf('/hello') !== -1
+                        (router.pathname.indexOf('/machine-data') !== -1
                           ? 'opacity-75'
                           : 'text-blueGray-300')
                       }></i>{' '}
-                    Data Table
+                    Machine Data
                   </a>
                 </Link>
               </li>
