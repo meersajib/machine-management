@@ -10,7 +10,7 @@ const saveCookie = (name, value, day) => {
 const getCookie = (name, context = null) => {
   const cookies = parseCookies(context, name);
   // console.log({ cookies });
-  return cookies;
+  return cookies[name];
 };
 
 const deleteCookie = (name, context = null) => {

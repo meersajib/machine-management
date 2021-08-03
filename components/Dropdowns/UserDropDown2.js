@@ -16,7 +16,7 @@ export default function UserDropdown2() {
 
   useEffect(() => {
     const userName = getCookie('mcuser');
-    setUsername(userName?.mcuser);
+    setUsername(userName);
   }, []);
 
   const logout = () => {
