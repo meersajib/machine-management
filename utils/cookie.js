@@ -7,13 +7,14 @@ const saveCookie = (name, value, day) => {
   });
 };
 
-const getCookie = (name, context=null) => {
-  const cookie = parseCookies(context,name);
-  console.log({ cookies });
+const getCookie = (name, context = null) => {
+  const cookies = parseCookies(context, name);
+  // console.log({ cookies });
+  return cookies;
 };
 
-const deleteCookie = (name, context=null) => {
-	console.log('deleteCookie',name);
+const deleteCookie = (name, context = null) => {
+  console.log('deleteCookie', name);
   destroyCookie(context, name);
 };
 
