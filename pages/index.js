@@ -12,7 +12,7 @@ export default function Index() {
         <div className='grid place-items-center'>
           <div
             style={{ background: 'green' }}
-            className='w-12 bg-green-700 text-white h-12 rounded-full  border grid place-items-center'>
+            className='w-16 text-xs bg-green-700 text-white h-16 rounded-full  border grid place-items-center'>
             On
           </div>
           <button className='700 p-1 px-2 border border-gray-500 mt-1'>
@@ -20,7 +20,7 @@ export default function Index() {
           </button>
         </div>
         <div className='grid place-items-center'>
-          <div className='bg-red-700 w-12 h-12 rounded-full text-white  border grid place-items-center'>
+          <div className='bg-red-700 w-16 text-xs h-16 rounded-full text-white  border grid place-items-center'>
             Off
           </div>
           <button className='700 p-1 px-2 border border-gray-500 mt-1'>
@@ -30,7 +30,7 @@ export default function Index() {
         <div className='grid place-items-center'>
           <div
             style={{ background: 'green' }}
-            className='w-12 bg-green-700 text-white h-12 rounded-full  border grid place-items-center'>
+            className='w-16 text-xs bg-green-700 text-white h-16 rounded-full  border grid place-items-center'>
             On
           </div>
           <button className='700 p-1 px-2 border border-gray-500 mt-1'>
@@ -38,23 +38,23 @@ export default function Index() {
           </button>
         </div>
         <div className='grid place-items-center'>
-          <div className='bg-red-700 w-12 h-12 rounded-full text-white  border grid place-items-center'>
+          <div className='bg-red-700 w-16 text-xs h-16 rounded-full text-white  border grid place-items-center'>
             Off
           </div>
           <p>M2</p>
         </div>
         <div className='grid place-items-center'>
           <div
-            style={{ background: 'green' }}
-            className='w-12 bg-green-700 text-white h-12 rounded-full  border grid place-items-center'>
-            On
+            style={{ background: 'black' }}
+            className='w-16 text-xs bg-green-700 text-white h-16 rounded-full  border grid place-items-center'>
+            No Signal
           </div>
           <button className='700 p-1 px-2 border border-gray-500 mt-1'>
             M2
           </button>
         </div>
         <div className='grid place-items-center'>
-          <div className='bg-red-700 w-12 h-12 rounded-full text-white  border grid place-items-center'>
+          <div className='bg-red-700 w-16 text-xs h-16 rounded-full text-white  border grid place-items-center'>
             Off
           </div>
           <button className='700 p-1 px-2 border border-gray-500 mt-1'>
