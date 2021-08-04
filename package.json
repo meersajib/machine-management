@@ -19,6 +19,7 @@
     "chart.js": "2.9.4",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
+    "mqtt": "^4.2.8",
     "next": "10.0.9",
     "nookies": "^2.5.2",
     "react": "17.0.1",
