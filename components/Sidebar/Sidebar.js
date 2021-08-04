@@ -96,18 +96,18 @@ export default function Sidebar(props) {
               </li>
 
               <li className='items-center'>
-                <Link href='#'>
+                <Link href='analytics'>
                   <a
                     className={
                       'text-xs uppercase py-3 font-bold block ' +
-                      (router.pathname.indexOf('/admin/tables') !== -1
+                      (router.pathname.indexOf('/analytics') !== -1
                         ? 'text-lightBlue-500 hover:text-lightBlue-600'
                         : 'text-white hover:text-blueGray-500')
                     }>
                     <i
                       className={
                         'fas fa-table mr-2 text-sm ' +
-                        (router.pathname.indexOf('/admin/tables') !== -1
+                        (router.pathname.indexOf('/analytics') !== -1
                           ? 'opacity-75'
                           : 'text-blueGray-300')
                       }></i>{' '}
@@ -117,22 +117,22 @@ export default function Sidebar(props) {
               </li>
 
               <li className='items-center'>
-                <Link href='#'>
+                <Link href='offline-online-devices'>
                   <a
                     className={
                       'text-xs uppercase py-3 font-bold block ' +
-                      (router.pathname.indexOf('/admin/maps') !== -1
+                      (router.pathname.indexOf('/offline-online-devices') !== -1
                         ? 'text-lightBlue-500 hover:text-lightBlue-600'
                         : 'text-white hover:text-blueGray-500')
                     }>
                     <i
                       className={
                         'fas fa-map-marked mr-2 text-sm ' +
-                        (router.pathname.indexOf('/admin/maps') !== -1
+                        (router.pathname.indexOf('/offline-online-devices') !== -1
                           ? 'opacity-75'
                           : 'text-blueGray-300')
                       }></i>{' '}
-                    Device List
+                    offline online devices
                   </a>
                 </Link>
               </li>
