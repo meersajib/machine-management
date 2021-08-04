@@ -76,8 +76,8 @@ export default function Index() {
 			breadcrumbName: 'Home',
 		},
 		{
-			path: '/machine-data',
-			breadcrumbName: 'Machine Data',
+			path: '/offline-online-devices',
+			breadcrumbName: 'Offline Online Devices',
 		},
 	];
 
@@ -87,36 +87,12 @@ export default function Index() {
 		setPageSize(pageSize);
 	}
 
-	const onFinish = (values) => {
-		console.log('Received values of form: ', values);
-	};
-
-
 	const AdvancedSearchForm = () => {
 		const onFinish = (values) => {
 			console.log('Received values of form: ', values);
 		};
-		function onChange(value, dateString) {
-			console.log('Selected Time: ', value);
-			console.log('Formatted Selected Time: ', dateString);
-		}
 
-		function onOk(value) {
-			console.log('onOk: ', value);
-		}
-
-		const children = [];
-		for (let i = 0; i < data?.length; i++) {
-			children.push(
-				<Option key={data[i].machine_no}>
-					{data[i].machine_no}
-				</Option>
-			);
-		}
-
-		function handleChange(value) {
-			console.log(`selected ${value}`);
-		}
+	
 		return (
 			<Form
 				form={form}
@@ -125,36 +101,7 @@ export default function Index() {
 				className="bg-white p-3 mb-3 mt-3"
 			>
 				<Space direction='horizontal' size={12} wrap={true} >
-					<Form.Item
-						name={`start`}
-						label={`Start`}
-					>
-						<DatePicker showTime onChange={onChange} onOk={onOk} />
-					</Form.Item>
-					<Form.Item
-						name={`end`}
-						label={`end`}
-					>
-						<DatePicker showTime onChange={onChange} onOk={onOk} />
-					</Form.Item>
-
-
-					<Form.Item
-						name={`machine_no`}
-						label={`Mahine No`}
-					>
-						<Select
-							mode="multiple"
-							allowClear
-							placeholder="Select"
-							style={{ width: 150 }}
-							className='min-width-10'
-						>
-							{children}
-						</Select>
-					</Form.Item>
-
-					<Form.Item
+				<Form.Item
 						name={`machine_status`}
 						label={`Mahine Status`}
 					>
@@ -169,30 +116,13 @@ export default function Index() {
 						</Select>
 					</Form.Item>
 				</Space>
-
-				<Row>
-					<Col
-						span={24}
-						style={{
-							textAlign: 'right',
-						}}
-					>
-						<Button type="primary" htmlType="submit">
+				<Button type="primary" htmlType="submit" className="mr-3 ml-3">
 							Search
 						</Button>
-						<Button
-							style={{
-								margin: '0 8px',
-							}}
-							onClick={() => {
-								form.resetFields();
-							}}
-						>
+						<Button	onClick={() => {form.resetFields();}}	>
 							Clear
 						</Button>
-
-						<ExportToExcel apiData={data} fileName={'machine-list'}/>
-					</Col>
+				<Row>
 				</Row>
 			</Form>
 		);
@@ -202,7 +132,7 @@ export default function Index() {
 		<>
 			<PageHeader
 				className={`p-3 bg-white mb-3`}
-				title="Machine Data"
+				title="Offline Online Devices"
 				breadcrumb={{ routes }}
 				subTitle=""
 			/>

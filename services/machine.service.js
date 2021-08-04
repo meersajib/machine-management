@@ -17,18 +17,33 @@ export default class MachineService {
     );
 
     return response?.data;
-  }
-  static async getMachineList(token) {
-    console.log('token retrieved', token);
+	}
+	
+	static async getMachineList(token) {
+		console.log('token retrieved', token);
     const response = await axios.get(
-      'http://172.104.163.254:8000/api/v1/machines',
+			'http://172.104.163.254:8000/api/v1/machines',
       {
-        headers: {
-          authorization: 'jwt ' + token,
+				headers: {
+					authorization: 'jwt ' + token,
         },
       },
-    );
+			);
+			
+			return response?.data;
+		}
 
-    return response?.data;
-  }
-}
+		static async getAnalytics(query, token) {	
+			console.log('token retrieved', token);
+			const response = await axios.get(
+				'http://172.104.163.254:8000/api/v1/machines/analytics',
+				{
+					headers: {
+						authorization: 'jwt ' + token,
+					},
+				},
+			);
+	
+			return response?.data;
+		}
+	}

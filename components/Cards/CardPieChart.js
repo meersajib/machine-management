@@ -3,7 +3,25 @@ import Chart from 'chart.js/auto';
 
 export default function CardLineChart() {
   React.useEffect(() => {
-    var config = {
+
+		const config = {
+			type: 'pie',
+			data: data,
+			options: {
+				responsive: true,
+				plugins: {
+					legend: {
+						position: 'top',
+					},
+					title: {
+						display: true,
+						text: 'Chart.js Pie Chart'
+					}
+				}
+			},
+		};
+
+    var config2 = {
       type: "line",
       data: {
         labels: [

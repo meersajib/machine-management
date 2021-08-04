@@ -10,13 +10,25 @@ const { Option } = Select;
 import { DatePicker } from 'antd'
 const { RangePicker } = DatePicker;
 
-import {ExportToExcel} from 'components/ExportToExcel'
+// components
+
+import CardLineChart from "components/Cards/CardLineChart.js";
+import CardBarChart from "components/Cards/CardBarChart.js";
+import CardPageVisits from "components/Cards/CardPageVisits.js";
+import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
+import { ExportToExcel } from 'components/ExportToExcel'
 
 export default function Index() {
 	const [spinner, setSpinner] = useState(false);
 	const [current, setCurrent] = useState(1);
 	const [pageSize, setPageSize] = useState(10);
 	const [form] = Form.useForm();
+
+	
+	function randomInteger(min, max) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
 	// mock data 
 	const columns = [
 		{
@@ -41,15 +53,49 @@ export default function Index() {
 		},
 	];
 
+	// const config = {
+	// 	type: 'bar',
+	// 	data: data,
+	// 	options: {
+	// 		responsive: true,
+	// 		plugins: {
+	// 			legend: {
+	// 				position: 'top',
+	// 			},
+	// 			title: {
+	// 				display: true,
+	// 				text: 'Chart.js Bar Chart'
+	// 			}
+	// 		}
+	// 	},
+	// };
+
+	// const chart_data = {
+	// 	labels: labels,
+	// 	datasets: [
+	// 		{
+	// 			label: 'Dataset 1',
+	// 			data: Utils.numbers(NUMBER_CFG),
+	// 			borderColor: Utils.CHART_COLORS.red,
+	// 			backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
+	// 		},
+	// 		{
+	// 			label: 'Dataset 2',
+	// 			data: Utils.numbers(NUMBER_CFG),
+	// 			borderColor: Utils.CHART_COLORS.blue,
+	// 			backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
+	// 		}
+	// 	]
+	// };
+
 	const data = [];
 
-	for (let i = 1; i <= 100; i++) {
+	for (let i = 1; i <= 20; i++) {
 		data.push({
 			machine_no: i,
-			machine_status: i / 2 ? 'on' : 'off',
-			start: new Date().toLocaleString(),
-			end: new Date().toLocaleString(),
-			total_minutes: i + 2,
+			total_on_time: randomInteger(5,200),
+			total_off_time: randomInteger(5,200),
+			efficiency: randomInteger(1,100),
 		});
 	}
 
@@ -153,21 +199,6 @@ export default function Index() {
 							{children}
 						</Select>
 					</Form.Item>
-
-					<Form.Item
-						name={`machine_status`}
-						label={`Mahine Status`}
-					>
-						<Select
-							allowClear
-							placeholder="Select"
-							style={{ width: 100 }}
-							className='min-width-10'
-						>
-							<Option value={'on'} key={'on'}>On</Option>
-							<Option value={'off'} key={'off'}>Off</Option>
-						</Select>
-					</Form.Item>
 				</Space>
 
 				<Row>
@@ -190,8 +221,6 @@ export default function Index() {
 						>
 							Clear
 						</Button>
-
-						<ExportToExcel apiData={data} fileName={'machine-list'}/>
 					</Col>
 				</Row>
 			</Form>
@@ -210,13 +239,17 @@ export default function Index() {
 			<Spin spinning={spinner} size={'default'} className={`bg-white m-`}>
 				{
 					data?.length ?
-						<Table
-							{...state}
-							pagination={{ position: [state.top, state.bottom], onChange: PageChange, total: data?.length | 0, defaultCurrent: current | 1 }}
-							columns={tableColumns}
-							dataSource={state.hasData ? data : null}
-							className={`p-2 bg-white`}
-						/>
+						<>
+							<div className="flex flex-wrap">
+								<div className="w-full xl:w-4/12 px-4">
+									<CardBarChart data={data} />
+								</div>
+								<div className="w-full xl:w-4/12 px-4">
+									<CardSocialTraffic data={data}/>
+								</div>
+							</div>
+						</>
+
 						:
 						<Empty className={`bg-white p-5`} description={'Data not found!'} />
 				}
@@ -236,9 +269,10 @@ export async function getServerSideProps(context) {
 	const query = context?.query;
 	console.log('query', query);
 	const token = getCookie('mctoken', context);
+	let data = [];
 	try {
-		const response = await MachineService.getMachineData(query, token);;
-		const data = response?.data;
+		const response = await MachineService.getAnalytics(query, token);;
+		data = response?.data;
 		console.log('data', data);
 	} catch (error) {
 		const msg = error?.response?.data?.message || 'Something went working! please try again.';
@@ -246,7 +280,7 @@ export async function getServerSideProps(context) {
 	}
 
 	return {
-		props: {},
+		props: { data },
 	};
 }
 
