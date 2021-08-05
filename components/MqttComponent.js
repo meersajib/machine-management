@@ -8,6 +8,7 @@ class MqttComponent extends Component {
     this.state = {
       data: {},
       macnines: [],
+      spinner: false,
     };
   }
 
@@ -65,7 +66,9 @@ class MqttComponent extends Component {
               </div>
             ))}
           </div>
-        ) : null}
+        ) : (
+          <p>Loading...</p>
+        )}
       </Fragment>
     );
   }

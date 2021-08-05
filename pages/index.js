@@ -11,7 +11,23 @@ import Admin from 'layouts/Admin.js';
 import MqttComponent from 'components/MqttComponent';
 
 export default function Index(props) {
+  const token = getCookie('mctoken');
   const [machineList, setMachineList] = useState(props?.machines);
+
+  let machines = [];
+
+  useEffect(async () => {
+    try {
+      const response = await MachineService.getMachineList(token);
+      setMachineList(response?.data);
+    } catch (error) {
+      const msg =
+        error?.response?.data?.message ||
+        'Something went working! please try again.';
+      console.log('error message ', msg);
+    }
+  }, []);
+
   return (
     <div className='h-screen'>
       <MqttComponent machineList={machineList} />
@@ -27,23 +43,8 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const token = getCookie('mctoken', context);
-
-  let machines = [];
-  try {
-    const response = await MachineService.getMachineList(token);
-    machines = response?.data;
-  } catch (error) {
-    const msg =
-      error?.response?.data?.message ||
-      'Something went working! please try again.';
-    console.log('error message ', msg);
-  }
-
   return {
-    props: {
-      machines,
-    },
+    props: {},
   };
 }
 
