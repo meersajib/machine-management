@@ -1,0 +1,34 @@
+.grid_container{
+  display: grid;
+    grid-template-columns: repeat(6,1fr);
+    grid-gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+.machine_container{
+display: grid;
+    grid-template-columns: auto;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    grid-gap: 10px;
+}
+.status_circle{
+  height: 100px;
+  width: 100px;
+  border-radius: 100px;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-transform: uppercase;
+}
+.on_circle{
+  background-color: green;
+}
+.off_circle{
+  background-color: red;
+}
+.no_signal{
+  background-color: black;
+}

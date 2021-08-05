@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import mqtt from 'mqtt';
+import styles from './MqttComponent.module.css';
 
 class MqttComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: {},
+      macnines: [],
     };
   }
 
@@ -27,6 +29,12 @@ class MqttComponent extends Component {
     let new_data = this.state.data;
     new_data[machine_no] = message;
     this.setState({ data: new_data });
+    this.props.machineList
+      .filter((num) => num.machine_no == machine_no)
+      .map((machine_item) => {
+        machine_item.status = message;
+      });
+    this.setState({ machines: this.props.machineList });
   };
 
   componentWillUnmount() {
@@ -36,16 +44,29 @@ class MqttComponent extends Component {
   }
 
   render() {
-    console.log('state data: ', this.state.data);
     return (
-      <div>
-        <h1>Data: </h1>
-        {Object.keys(this.state.data).map((key, index) => (
-          <p key={index}>
-            machine: {key}, Data: {this.state.data[key]}!
-          </p>
-        ))}
-      </div>
+      <Fragment>
+        {this.state.machines?.length ? (
+          <div className={styles.grid_container}>
+            {this.state.machines?.map((machine, index) => (
+              <div key={index} className={styles.machine_container}>
+                <div
+                  className={`${styles.status_circle} ${
+                    machine?.status == `on`
+                      ? styles.on_circle
+                      : machine?.status == `off`
+                      ? styles.off_circle
+                      : styles.no_signal
+                  }`}>
+                  {machine?.status}
+                </div>
+                <p>{machine?.machine_no}</p>
+                <p>{machine?.name}</p>
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </Fragment>
     );
   }
 }
