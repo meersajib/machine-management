@@ -22,6 +22,7 @@ class MqttComponent extends Component {
     });
     this.client.on('message', (topic, message) => {
       this.handleJsonMessage(topic, message.toString());
+      console.log(`topic ${topic} message ${message}`);
     });
   }
 
@@ -66,9 +67,7 @@ class MqttComponent extends Component {
               </div>
             ))}
           </div>
-        ) : (
-          <p>Loading...</p>
-        )}
+        ) : null}
       </Fragment>
     );
   }

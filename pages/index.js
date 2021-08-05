@@ -3,23 +3,22 @@ import React, { useState, useEffect } from 'react';
 import AuthService from 'services/auth.service';
 import MachineService from 'services/machine.service';
 import { getCookie } from 'utils/cookie';
-import mqtt from 'mqtt';
-
+import { Spin } from 'antd';
 // layout for page
 
 import Admin from 'layouts/Admin.js';
 import MqttComponent from 'components/MqttComponent';
 
-export default function Index(props) {
+export default function Index() {
   const token = getCookie('mctoken');
-  const [machineList, setMachineList] = useState(props?.machines);
-
-  let machines = [];
+  const [machineList, setMachineList] = useState([]);
+  const [spinner, setSpinner] = useState(true);
 
   useEffect(async () => {
     try {
       const response = await MachineService.getMachineList(token);
       setMachineList(response?.data);
+      setSpinner(false);
     } catch (error) {
       const msg =
         error?.response?.data?.message ||
@@ -30,7 +29,13 @@ export default function Index(props) {
 
   return (
     <div className='h-screen'>
-      <MqttComponent machineList={machineList} />
+      {machineList?.length ? (
+        <MqttComponent machineList={machineList} />
+      ) : (
+        // <div>
+        <Spin spinning={spinner} size={'default'} className={`bg-white m-`} />
+        // </div>
+      )}
     </div>
   );
 }
