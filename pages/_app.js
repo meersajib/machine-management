@@ -19,11 +19,11 @@ Router.events.on('routeChangeStart', () => {
 });
 
 Router.events.on('routeChangeComplete', () => {
-  ReactDOM.unmountComponentAtNode(document.getElementById('page-transition'));
+	ReactDOM.unmountComponentAtNode(document.getElementById('page-transition'));
 });
 
 Router.events.on('routeChangeError', () => {
-  ReactDOM.unmountComponentAtNode(document.getElementById('page-transition'));
+	ReactDOM.unmountComponentAtNode(document.getElementById('page-transition'));
 });
 
 export default class MyApp extends App {
@@ -67,32 +67,35 @@ export default class MyApp extends App {
       return {};
     }
 
-    let pageProps = {};
+		let pageProps = {};
+		pageProps.token = token;
 
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
-    }
+		if (Component.getInitialProps) {
+			pageProps = await Component.getInitialProps(ctx);
+		}
 
-    return { pageProps };
-  }
+		return { pageProps };
+	}
 
-  render() {
-    const { Component, pageProps } = this.props;
-    const Layout = Component.layout || (({ children }) => <>{children}</>);
+	render() {
+		const { Component, pageProps } = this.props;
+		const Layout = Component.layout || (({ children }) => <>{children}</>);
+		return (
+			<React.Fragment>
+				{console.log('pageProps?.token=',pageProps?.token)}
+				<Head>
+					<meta
+						name='viewport'
+						content='width=device-width, initial-scale=1, shrink-to-fit=no'
+					/>
+					<title>Machine Management</title>
+				</Head>
+				
+					<Layout>
+						<Component {...pageProps} />
+					</Layout>
 
-    return (
-      <React.Fragment>
-        <Head>
-          <meta
-            name='viewport'
-            content='width=device-width, initial-scale=1, shrink-to-fit=no'
-          />
-          <title>Machine Management</title>
-        </Head>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </React.Fragment>
-    );
-  }
+			</React.Fragment>
+		);
+	}
 }
