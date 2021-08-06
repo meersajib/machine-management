@@ -143,7 +143,7 @@ export default function Sidebar(props) {
 
               {groups?.includes('Maintainer') ? (
                 <li className='items-center'>
-                  <Link href='#'>
+                  <Link href='/parameter-data'>
                     <a
                       className={
                         'text-xs uppercase py-3 font-bold block ' +

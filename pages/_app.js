@@ -8,13 +8,12 @@ import 'antd/dist/antd.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'styles/tailwind.css';
 import 'styles/global.css';
-import {getCookie} from 'utils/cookie';
+import { getCookie } from 'utils/cookie';
 import AuthService from 'services/auth.service';
-
 
 Router.events.on('routeChangeStart', () => {
   ReactDOM.render(
-    <PageChange loading={true}/>,
+    <PageChange loading={true} />,
     document.getElementById('page-transition'),
   );
 });
@@ -28,25 +27,45 @@ Router.events.on('routeChangeError', () => {
 });
 
 export default class MyApp extends App {
-  componentDidMount() {
-	}
+  componentDidMount() {}
 
   static async getInitialProps({ Component, router, ctx }) {
+    const token = getCookie('mctoken', ctx);
+    const user = getCookie('mcuser', ctx);
+    const group = getCookie('mcgroups', ctx);
+    const groupList = group?.split(',');
 
-		const token = getCookie('mctoken',ctx);
-		const user = getCookie('mcuser',ctx);
-		const group = getCookie('mcgroups',ctx);
-		
-		const protected_routes =['/','/analytics','/offline-online-devices','/machine-data'];
+    const protected_routes = [
+      '/',
+      '/analytics',
+      '/offline-online-devices',
+      '/machine-data',
+      '/parameter-data',
+    ];
 
-		const { res } = ctx;
-		if(protected_routes.includes(router?.pathname) && (!token || !user || !group)) {
-			res.setHeader('set-cookie', ['mctoken=; max-age=0;','mcuser=; max-age=0;','mcgroups=; max-age=0;']);
-			
-			res.writeHead(302, { Location: '/login' });
+    const { res } = ctx;
+    if (
+      protected_routes.includes(router?.pathname) &&
+      (!token || !user || !group)
+    ) {
+      res.setHeader('set-cookie', [
+        'mctoken=; max-age=0;',
+        'mcuser=; max-age=0;',
+        'mcgroups=; max-age=0;',
+      ]);
+
+      res.writeHead(302, { Location: '/login' });
       res.end();
-			return {}
-		}
+      return {};
+    }
+    if (
+      !groupList?.includes('Maintainer') &&
+      router.pathname == `/parameter-data`
+    ) {
+      res.writeHead(302, { Location: '/404' });
+      res.end();
+      return {};
+    }
 
     let pageProps = {};
 
@@ -70,9 +89,9 @@ export default class MyApp extends App {
           />
           <title>Machine Management</title>
         </Head>
-				<Layout>
+        <Layout>
           <Component {...pageProps} />
-        </Layout>        
+        </Layout>
       </React.Fragment>
     );
   }

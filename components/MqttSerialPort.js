@@ -1,0 +1,77 @@
+import React, { Component, Fragment } from 'react';
+import mqtt from 'mqtt';
+import styles from './MqttComponent.module.css';
+
+class MqttSerialPort extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: {},
+      macnines: [],
+      spinner: false,
+    };
+  }
+
+  componentDidMount() {
+    this.client = mqtt.connect('mqtt://172.104.163.254:8083');
+    this.client.options.username = 'shafik';
+    this.client.options.password = 'shafik';
+    this.client.on('connect', () => {
+      console.log('connected');
+      this.client.subscribe('htec/+');
+    });
+    this.client.on('message', (serial_port) => {
+      this.handleJsonMessage(serial_port);
+      console.log(`serial_port ${serial_port}`);
+    });
+  }
+
+  handleJsonMessage = (serial_port) => {
+    console.log('setiallll', serial_port);
+    // const machine_no = serial_port.split('/')[1];
+    // let new_data = this.state.data;
+    // new_data[machine_no] = message;
+    // this.setState({ data: new_data });
+    // this.props.machineList
+    //   .filter((num) => num.machine_no == machine_no)
+    //   .map((machine_item) => {
+    //     machine_item.status = message;
+    //   });
+    // this.setState({ machines: this.props.machineList });
+  };
+
+  componentWillUnmount() {
+    if (this.client) {
+      this.client.end();
+    }
+  }
+
+  render() {
+    return (
+      <Fragment>
+        {this.state.machines?.length ? (
+          <div className={styles.grid_container}>
+            {this.state.machines?.map((machine, index) => (
+              <div key={index} className={styles.machine_container}>
+                <div
+                  className={`${styles.status_circle} ${
+                    machine?.status == `on`
+                      ? styles.on_circle
+                      : machine?.status == `off`
+                      ? styles.off_circle
+                      : styles.no_signal
+                  }`}>
+                  {machine?.status}
+                </div>
+                <p>{machine?.machine_no}</p>
+                <p>{machine?.name}</p>
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </Fragment>
+    );
+  }
+}
+
+export default MqttSerialPort;
