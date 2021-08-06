@@ -9,6 +9,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'styles/tailwind.css';
 import 'styles/global.css';
 import {getCookie} from 'utils/cookie';
+import AuthService from 'services/auth.service';
 
 
 Router.events.on('routeChangeStart', () => {
@@ -33,11 +34,15 @@ export default class MyApp extends App {
   static async getInitialProps({ Component, router, ctx }) {
 
 		const token = getCookie('mctoken',ctx);
+		const user = getCookie('mcuser',ctx);
+		const group = getCookie('mcgroups',ctx);
+		
 		const protected_routes =['/','/analytics','/offline-online-devices','/machine-data'];
 
-		const { req, res, query } = ctx;
-
-		if(protected_routes.includes(router?.pathname) && !token) {
+		const { res } = ctx;
+		if(protected_routes.includes(router?.pathname) && (!token || !user || !group)) {
+			res.setHeader('set-cookie', ['mctoken=; max-age=0;','mcuser=; max-age=0;','mcgroups=; max-age=0;']);
+			
 			res.writeHead(302, { Location: '/login' });
       res.end();
 			return {}
