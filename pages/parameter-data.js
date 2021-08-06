@@ -37,9 +37,7 @@ export default function Index() {
       {machineList?.length ? (
         <MqttSerialPort machineList={machineList} />
       ) : (
-        // <div>
         <Spin spinning={spinner} size={'default'} className={`bg-white m-`} />
-        // </div>
       )}
     </div>
   );

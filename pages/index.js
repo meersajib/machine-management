@@ -13,27 +13,39 @@ export default function Index() {
   const token = getCookie('mctoken');
   const [machineList, setMachineList] = useState([]);
   const [spinner, setSpinner] = useState(true);
+  const [loadMore,setLodMore] = useState(false)
 
-  useEffect(async () => {
-    try {
+  const fetchData = async () => {
+    console.log('clickedddddddddddd')
+ try {
       const response = await MachineService.getMachineList(token);
       setMachineList(response?.data);
-      setSpinner(false);
+   setSpinner(false);
+   console.log('responseeeeeee',response)
+      if (response.meta_data.next != null) {
+        setLodMore(true)
+      } else {
+        setLoadMore(false)
+          }
     } catch (error) {
       const msg =
         error?.response?.data?.message ||
         'Something went working! please try again.';
       console.log('error message ', msg);
     }
+  }
+
+  useEffect(async () => {
+   fetchData()
   }, []);
 
   return (
     <div className='h-screen'>
       {machineList?.length ? (
-        <MqttComponent machineList={machineList} />
+        <MqttComponent machineList={machineList} fetchData={fetchData} loadMore={loadMore} />
       ) : (
         // <div>
-        <Spin spinning={spinner} size={'default'} className={`bg-white m-`} />
+        <Spin spinning={spinner} size={'default'}  className={`bg-white m-`} />
         // </div>
       )}
     </div>

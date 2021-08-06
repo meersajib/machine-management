@@ -23,11 +23,13 @@ class MqttComponent extends Component {
     });
     this.client.on('message', (topic, message) => {
       this.handleJsonMessage(topic, message.toString());
-      console.log(`topic ${topic} message ${message}`);
+      // console.log(`topic ${topic} message ${message}`);
     });
   }
 
   handleJsonMessage = (topic, message) => {
+    console.log('topic', topic)
+    console.log('message',message)
     const machine_no = topic.split('/')[1];
     let new_data = this.state.data;
     new_data[machine_no] = message;
@@ -45,11 +47,11 @@ class MqttComponent extends Component {
       this.client.end();
     }
   }
-
   render() {
     return (
       <Fragment>
         {this.state.machines?.length ? (
+          <React.Fragment>
           <div className={styles.grid_container}>
             {this.state.machines?.map((machine, index) => (
               <div key={index} className={styles.machine_container}>
@@ -67,7 +69,12 @@ class MqttComponent extends Component {
                 <p>{machine?.name}</p>
               </div>
             ))}
-          </div>
+            </div>
+            {console.log('tttttttttt',this.props)}
+            {this.props.loadMore ? 
+              <button onClick={this.props.fetchData.bind(this)}>Load More...</button> : null
+          }
+            </React.Fragment>
         ) : null}
       </Fragment>
     );

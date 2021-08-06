@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import mqtt from 'mqtt'
-import { Table, Tag, Space } from 'antd';
-
+import ParameterDataTable from './Cards/ParameterDataTable';
 
 
 class MqttSerailPort extends Component {
@@ -28,46 +27,12 @@ class MqttSerailPort extends Component {
   }
 
   handleJsonMessage = (topic, message) => {
-    console.log('topic',topic)
-    console.log('message',message)
     const machine_no = topic.split("/")[1];
     let new_data =this.state.data;
     new_data[machine_no] = message;
     this.setState({data: new_data});
   }
 
-    columns = [
-  {
-    title: 'Topic Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: text => <a>{text}</a>,
-  },
-  {
-    title: 'Data',
-    dataIndex: 'age',
-    key: 'age',
-    },
-  ]
- 
-  tableData = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-  },
-  ];
-  t
  
 
   componentWillUnmount() {
@@ -78,16 +43,11 @@ class MqttSerailPort extends Component {
 
 
   render() {
-    console.log("state data: ", this.state.data);
+
     return (
-      <div>
-        <Table columns={this.columns} dataSource={this.state.data} />
-        
-          <h1>Data: </h1>
-          {Object.keys(this.state.data).map((key, index) => (
-              <p key={index}>machine: {key}, Data: {this.state.data[key]}!</p>
-          ))}
-        </div>
+      <React.Fragment>        
+          <ParameterDataTable data={this.state.data} />
+        </React.Fragment>
     );
   }
 }
