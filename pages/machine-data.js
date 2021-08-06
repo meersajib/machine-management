@@ -1,4 +1,4 @@
-import { Table,Form, Space, Spin, Row, Col, Input, Button, PageHeader, Empty, Alert } from 'antd';
+import { Table,Form, Space, Spin, Row, Col, Button, PageHeader, Empty, Alert } from 'antd';
 import Admin from 'layouts/Admin.js';
 import { useState } from 'react';
 import { Select } from 'antd';
@@ -73,8 +73,6 @@ export default function Index() {
 	];
 
 	const PageChange = (current, page_size) => {
-		console.log('query before',query);
-		console.log('{ ...query, page: current }',{ ...query, page: current });
 		setQuery({ ...query, page: current})
 		doFetch({ ...query, page: current });
 	}
@@ -95,7 +93,7 @@ export default function Index() {
 		};
 
 		function onOk(value) {
-			console.log('onOk: ', value);
+			// console.log('onOk: ', value);
 		}
 
 		const children = [];

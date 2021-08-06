@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import Chart from 'chart.js/auto';
 
 export default function CardBarChart({ data }) {
-	console.log('data', data);
 	useEffect(() => {
 		const labels = data?.map(d => `m/c-${d?.machine_no} Effi: ${Number(d?.efficiency).toFixed(2)}`)
 		const ontime = data?.map(d => Number(d?.total_on_time).toFixed(0))
