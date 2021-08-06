@@ -40,17 +40,4 @@ export default function Index() {
   );
 }
 
-export async function getServerSideProps(context) {
-  const isAuthenticated = AuthService.isAuthorized(context);
-  if (!isAuthenticated) {
-    return {
-      redirect: { destination: '/login', permanent: false },
-    };
-  }
-
-  return {
-    props: {},
-  };
-}
-
 Index.layout = Admin;
