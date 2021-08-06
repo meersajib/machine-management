@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import mqtt from 'mqtt';
 import styles from './MqttComponent.module.css';
 
+
 class MqttComponent extends Component {
   constructor(props) {
     super(props);

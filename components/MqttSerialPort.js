@@ -1,77 +1,95 @@
-import React, { Component, Fragment } from 'react';
-import mqtt from 'mqtt';
-import styles from './MqttComponent.module.css';
+import React, { Component } from 'react';
+import mqtt from 'mqtt'
+import { Table, Tag, Space } from 'antd';
 
-class MqttSerialPort extends Component {
+
+
+class MqttSerailPort extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      data: {},
-      macnines: [],
-      spinner: false,
-    };
+      data: []
+    }
   }
+
+
 
   componentDidMount() {
     this.client = mqtt.connect('mqtt://172.104.163.254:8083');
     this.client.options.username = 'shafik';
     this.client.options.password = 'shafik';
-    this.client.on('connect', () => {
-      console.log('connected');
-      this.client.subscribe('htec/+');
+    this.client.on("connect", () => {
+      console.log("connected");
+      this.client.subscribe("htec/+");
     });
-    this.client.on('message', (serial_port) => {
-      this.handleJsonMessage(serial_port);
-      console.log(`serial_port ${serial_port}`);
-    });
+    this.client.on('message', (topic, message) => {
+      this.handleJsonMessage(topic, message.toString());
+    })
   }
 
-  handleJsonMessage = (serial_port) => {
-    console.log('setiallll', serial_port);
-    // const machine_no = serial_port.split('/')[1];
-    // let new_data = this.state.data;
-    // new_data[machine_no] = message;
-    // this.setState({ data: new_data });
-    // this.props.machineList
-    //   .filter((num) => num.machine_no == machine_no)
-    //   .map((machine_item) => {
-    //     machine_item.status = message;
-    //   });
-    // this.setState({ machines: this.props.machineList });
-  };
+  handleJsonMessage = (topic, message) => {
+    console.log('topic',topic)
+    console.log('message',message)
+    const machine_no = topic.split("/")[1];
+    let new_data =this.state.data;
+    new_data[machine_no] = message;
+    this.setState({data: new_data});
+  }
+
+    columns = [
+  {
+    title: 'Topic Name',
+    dataIndex: 'name',
+    key: 'name',
+    render: text => <a>{text}</a>,
+  },
+  {
+    title: 'Data',
+    dataIndex: 'age',
+    key: 'age',
+    },
+  ]
+ 
+  tableData = [
+  {
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    age: 42,
+  },
+  {
+    key: '3',
+    name: 'Joe Black',
+    age: 32,
+  },
+  ];
+  t
+ 
 
   componentWillUnmount() {
     if (this.client) {
-      this.client.end();
+      this.client.end()
     }
   }
 
+
   render() {
+    console.log("state data: ", this.state.data);
     return (
-      <Fragment>
-        {this.state.machines?.length ? (
-          <div className={styles.grid_container}>
-            {this.state.machines?.map((machine, index) => (
-              <div key={index} className={styles.machine_container}>
-                <div
-                  className={`${styles.status_circle} ${
-                    machine?.status == `on`
-                      ? styles.on_circle
-                      : machine?.status == `off`
-                      ? styles.off_circle
-                      : styles.no_signal
-                  }`}>
-                  {machine?.status}
-                </div>
-                <p>{machine?.machine_no}</p>
-                <p>{machine?.name}</p>
-              </div>
-            ))}
-          </div>
-        ) : null}
-      </Fragment>
+      <div>
+        <Table columns={this.columns} dataSource={this.state.data} />
+        
+          <h1>Data: </h1>
+          {Object.keys(this.state.data).map((key, index) => (
+              <p key={index}>machine: {key}, Data: {this.state.data[key]}!</p>
+          ))}
+        </div>
     );
   }
 }
 
-export default MqttSerialPort;
+export default MqttSerailPort;
