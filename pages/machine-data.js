@@ -1,14 +1,9 @@
-import { Table, Switch, Radio, Form, Space, Spin, Row, Col, Input, Button, PageHeader, Empty, Alert } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Table,Form, Space, Spin, Row, Col, Input, Button, PageHeader, Empty, Alert } from 'antd';
 import Admin from 'layouts/Admin.js';
-import AuthService from 'services/auth.service';
-import MachineService from 'services/machine.service';
-import { useEffect, useState } from 'react';
-import { getCookie } from 'utils/cookie';
+import { useState } from 'react';
 import { Select } from 'antd';
 const { Option } = Select;
-import { DatePicker } from 'antd'
-const { RangePicker } = DatePicker;
+import { DatePicker } from 'antd';
 import { ExportToExcel } from 'components/ExportToExcel'
 import { useDataApi } from 'utils/data.hooks';
 
@@ -23,11 +18,6 @@ export default function Index() {
 	const url = 'http://172.104.163.254:8000/api/v1/machines/data';
 	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, query);
 	const [{ data: all_data, isError: isError2 }, doFetch2] = useDataApi(url);
-
-	// count: 28
-	// next: 2
-	// page_size: 12
-
 
 	// mock data 
 	const columns = [
@@ -53,18 +43,7 @@ export default function Index() {
 		},
 	];
 
-	const data2 = [];
-
-	for (let i = 1; i <= 100; i++) {
-		data2.push({
-			machine_no: i,
-			machine_status: i / 2 ? 'on' : 'off',
-			start: new Date().toLocaleString(),
-			end: new Date().toLocaleString(),
-			total_minutes: i + 2,
-		});
-	}
-
+	
 	const state = {
 		bordered: false,
 		loading: false,
@@ -94,24 +73,14 @@ export default function Index() {
 	];
 
 	const PageChange = (current, page_size) => {
-		console.log('current=', current, 'pagesize=', page_size);
-		// setQuery({ ...query, page: current });
 		console.log('query before',query);
 		console.log('{ ...query, page: current }',{ ...query, page: current });
 		setQuery({ ...query, page: current})
 		doFetch({ ...query, page: current });
 	}
 
-	const onFinish = (values) => {
-		console.log('Received values of form: ', values);
-	};
-
-
 	const AdvancedSearchForm = () => {
 		const onFinish = (values) => {
-			console.log('Received values of form: ', values);
-			console.log('start', start);
-			console.log('end', end);
 			const params = {};
 			start && (params.start = start)
 			end && (params.end = end)
@@ -132,7 +101,6 @@ export default function Index() {
 		const children = [];
 		if (!isError2) {
 			let unique_machine_no = all_data?.map(m => m?.machine_no)?.filter((v, i, a) => a?.indexOf(v) === i);
-			// console.log('unique_machine_no: ', unique_machine_no);
 			for (let i = 0; i < unique_machine_no?.length; i++) {
 				children.push(
 					<Option key={unique_machine_no[i]}>
@@ -143,9 +111,7 @@ export default function Index() {
 
 		}
 
-		function handleChange(value) {
-			console.log(`selected ${value}`);
-		}
+	
 
 		return (
 			<Form

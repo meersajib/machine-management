@@ -1,9 +1,11 @@
-import React from "react";
+import { useEffect, useState } from "react";
 
-// components
-
-export default function CardSocialTraffic({ data }) {
-	const sorted_data= data.sort((a,b)=>Number(b.efficiency) - Number(a.efficiency))
+export default function CardMachineEfficiency({ data }) {
+	const [sorted, setSorted] = useState([])
+	useEffect(() => {
+		const sorted_data = data.sort((a, b) => Number(b.efficiency) - Number(a.efficiency))
+		setSorted(sorted_data);
+	}, [data])
 	return (
 		<>
 			<div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
@@ -15,12 +17,12 @@ export default function CardSocialTraffic({ data }) {
 							</h3>
 						</div>
 						<div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-							<button
+							{/* <button
 								className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
 								type="button"
 							>
 								See all
-							</button>
+							</button> */}
 						</div>
 					</div>
 				</div>
@@ -40,13 +42,13 @@ export default function CardSocialTraffic({ data }) {
 						</thead>
 						<tbody>
 							{
-								sorted_data?.length ? sorted_data?.map(machine => (
-									<tr>
+								sorted?.length ? sorted?.map((machine, index) => (
+									<tr key={index}>
 										<th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
 											{machine?.machine_no}
 										</th>
 										<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-											{machine?.efficiency}
+											{machine?.efficiency || 'N/A'}
 										</td>
 										<td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
 											<div className="flex items-center">
@@ -63,7 +65,6 @@ export default function CardSocialTraffic({ data }) {
 										</td>
 									</tr>
 								))
-
 									: null
 							}
 						</tbody>

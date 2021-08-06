@@ -5,7 +5,7 @@ import { getCookie } from 'utils/cookie';
 export const useDataApi = (initialUrl, initialquery = {}) => {
 	const [data, setData] = useState([]);
 	const [meta, setMeta] = useState(null);
-	const [url, setUrl] = useState(initialUrl || 'http://172.104.163.254:8000/api/v1/machines/data');
+	const [url, setUrl] = useState(initialUrl);
 	const [query, setQuery] = useState(initialquery);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isError, setIsError] = useState(false);

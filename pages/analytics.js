@@ -1,120 +1,25 @@
-import { Table, Switch, Radio, Form, Space, Spin, Row, Col, Input, Button, PageHeader, Empty } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Form, Space, Spin, Row, Col, Button, PageHeader, Alert, Empty } from 'antd';
 import Admin from 'layouts/Admin.js';
-import AuthService from 'services/auth.service';
-import MachineService from 'services/machine.service';
 import { useState } from 'react';
-import { getCookie } from 'utils/cookie';
 import { Select } from 'antd';
 const { Option } = Select;
-import { DatePicker } from 'antd'
-const { RangePicker } = DatePicker;
+import { DatePicker } from 'antd';
+import { useDataApi } from 'utils/data.hooks';
 
-// components
 
-import CardLineChart from "components/Cards/CardLineChart.js";
 import CardBarChart from "components/Cards/CardBarChart.js";
-import CardPageVisits from "components/Cards/CardPageVisits.js";
-import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
-import { ExportToExcel } from 'components/ExportToExcel'
+import CardPieChart from "components/Cards/CardPieChart.js";
+import CardMachineEfficiency from "components/Cards/CardMachineEfficiency.js";
 
 export default function Index() {
-	const [spinner, setSpinner] = useState(false);
-	const [current, setCurrent] = useState(1);
-	const [pageSize, setPageSize] = useState(10);
 	const [form] = Form.useForm();
+	const [start, setStart] = useState('');
+	const [end, setEnd] = useState('');
+	const [query, setQuery] = useState({});
 
-	
-	function randomInteger(min, max) {
-		return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-
-	// mock data 
-	const columns = [
-		{
-			title: 'Machine No',
-			dataIndex: 'machine_no',
-		},
-		{
-			title: 'Machine Status',
-			dataIndex: 'machine_status',
-		},
-		{
-			title: 'Start Time',
-			dataIndex: 'start',
-		},
-		{
-			title: 'End Time',
-			dataIndex: 'end',
-		},
-		{
-			title: 'Total Minutes',
-			dataIndex: 'total_minutes',
-		},
-	];
-
-	// const config = {
-	// 	type: 'bar',
-	// 	data: data,
-	// 	options: {
-	// 		responsive: true,
-	// 		plugins: {
-	// 			legend: {
-	// 				position: 'top',
-	// 			},
-	// 			title: {
-	// 				display: true,
-	// 				text: 'Chart.js Bar Chart'
-	// 			}
-	// 		}
-	// 	},
-	// };
-
-	// const chart_data = {
-	// 	labels: labels,
-	// 	datasets: [
-	// 		{
-	// 			label: 'Dataset 1',
-	// 			data: Utils.numbers(NUMBER_CFG),
-	// 			borderColor: Utils.CHART_COLORS.red,
-	// 			backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
-	// 		},
-	// 		{
-	// 			label: 'Dataset 2',
-	// 			data: Utils.numbers(NUMBER_CFG),
-	// 			borderColor: Utils.CHART_COLORS.blue,
-	// 			backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
-	// 		}
-	// 	]
-	// };
-
-	const data = [];
-
-	for (let i = 1; i <= 20; i++) {
-		data.push({
-			machine_no: i,
-			total_on_time: randomInteger(5,200),
-			total_off_time: randomInteger(5,200),
-			efficiency: randomInteger(1,100),
-		});
-	}
-
-	const state = {
-		bordered: false,
-		loading: false,
-		pagination: { position: 'bottom' },
-		size: 'default',
-		title: undefined,
-		showHeader: true,
-		scroll: undefined,
-		hasData: true,
-		tableLayout: undefined,
-		top: 'none',
-		bottom: 'bottomRight',
-	};
-
-	const tableColumns = columns.map(item => ({ ...item, ellipsis: true }));
-
+	const url = 'http://172.104.163.254:8000/api/v1/machines/analytics';
+	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, query);
+	const [{ data: all_data, isError: isError2 }, doFetch2] = useDataApi(url);
 
 	const routes = [
 		{
@@ -122,47 +27,42 @@ export default function Index() {
 			breadcrumbName: 'Home',
 		},
 		{
-			path: '/machine-data',
-			breadcrumbName: 'Machine Data',
+			path: '/analytics',
+			breadcrumbName: 'Analytics',
 		},
 	];
 
-	const PageChange = (current, pageSize) => {
-		console.log('current=', current, 'pagesize=', pageSize);
-		setCurrent(current);
-		setPageSize(pageSize);
-	}
-
-	const onFinish = (values) => {
-		console.log('Received values of form: ', values);
-	};
-
-
 	const AdvancedSearchForm = () => {
+
 		const onFinish = (values) => {
-			console.log('Received values of form: ', values);
+			const params = {};
+			start && (params.start = start)
+			end && (params.end = end)
+			if (values?.machine_no?.length) {
+				const numbers = values?.machine_no?.join('-');
+				params.machine_no = numbers;
+			}
+			setQuery({ ...query, ...params });
+			params.page = 1;
+			doFetch({ ...params });
 		};
-		function onChange(value, dateString) {
-			console.log('Selected Time: ', value);
-			console.log('Formatted Selected Time: ', dateString);
-		}
 
 		function onOk(value) {
 			console.log('onOk: ', value);
 		}
 
 		const children = [];
-		for (let i = 0; i < data?.length; i++) {
-			children.push(
-				<Option key={data[i].machine_no}>
-					{data[i].machine_no}
-				</Option>
-			);
+		if (!isError2) {
+			let unique_machine_no = all_data?.map(m => m?.machine_no)?.filter((v, i, a) => a?.indexOf(v) === i);
+			for (let i = 0; i < unique_machine_no?.length; i++) {
+				children.push(
+					<Option key={unique_machine_no[i]}>
+						{unique_machine_no[i]}
+					</Option>
+				);
+			}
 		}
 
-		function handleChange(value) {
-			console.log(`selected ${value}`);
-		}
 		return (
 			<Form
 				form={form}
@@ -175,13 +75,13 @@ export default function Index() {
 						name={`start`}
 						label={`Start`}
 					>
-						<DatePicker showTime onChange={onChange} onOk={onOk} />
+						<DatePicker showTime onChange={(value, dateString) => { setStart(dateString) }} onOk={onOk} />
 					</Form.Item>
 					<Form.Item
 						name={`end`}
 						label={`end`}
 					>
-						<DatePicker showTime onChange={onChange} onOk={onOk} />
+						<DatePicker showTime onChange={(value, dateString) => { setEnd(dateString) }} onOk={onOk} />
 					</Form.Item>
 
 
@@ -217,6 +117,10 @@ export default function Index() {
 							}}
 							onClick={() => {
 								form.resetFields();
+								setQuery({})
+								setStart('')
+								setEnd('')
+								doFetch({})
 							}}
 						>
 							Clear
@@ -231,57 +135,44 @@ export default function Index() {
 		<>
 			<PageHeader
 				className={`p-3 bg-white mb-3`}
-				title="Machine Data"
+				title="Analytics"
 				breadcrumb={{ routes }}
 				subTitle=""
 			/>
+
 			<AdvancedSearchForm />
-			<Spin spinning={spinner} size={'default'} className={`bg-white m-`}>
+			<Spin spinning={isLoading} size={'default'} className={`bg-white m-`}>
 				{
-					data?.length ?
+					isError ?
+						<Alert
+							message="Error occured!"
+							description={error || 'Something went wrong!'}
+							type="error"
+							showIcon
+						/>
+						:
+						data?.length ?
 						<>
 							<div className="flex flex-wrap">
-								<div className="w-full xl:w-4/12 px-4">
-									<CardBarChart data={data} />
+								<div className="w-full px-4">
+									<CardBarChart data={data}/>
 								</div>
-								<div className="w-full xl:w-4/12 px-4">
-									<CardSocialTraffic data={data}/>
+							</div>
+							<div className="flex flex-wrap">
+								<div className="w-full px-4">
+									<CardPieChart data={data}/>
+								</div>
+							</div>
+							<div className="flex flex-wrap mt-4">
+								<div className="w-full px-4">
+									<CardMachineEfficiency data={data}/>
 								</div>
 							</div>
 						</>
-
-						:
-						<Empty className={`bg-white p-5`} description={'Data not found!'} />
+						: <Empty />
 				}
-
 			</Spin>
 		</>
 	);
 }
-
-export async function getServerSideProps(context) {
-	const isAuthenticated = AuthService.isAuthorized(context);
-	if (!isAuthenticated) {
-		return {
-			redirect: { destination: '/login', permanent: false },
-		};
-	}
-	const query = context?.query;
-	console.log('query', query);
-	const token = getCookie('mctoken', context);
-	let data = [];
-	try {
-		const response = await MachineService.getAnalytics(query, token);;
-		data = response?.data;
-		console.log('data', data);
-	} catch (error) {
-		const msg = error?.response?.data?.message || 'Something went working! please try again.';
-		console.log('error message ', msg);
-	}
-
-	return {
-		props: { data },
-	};
-}
-
 Index.layout = Admin;
