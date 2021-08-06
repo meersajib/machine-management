@@ -1,22 +1,34 @@
-import { Table, Switch, Radio, Form, Space, Spin, Row, Col, Input, Button, PageHeader, Empty } from 'antd';
+import { Table, Switch, Radio, Form, Space, Spin, Row, Col, Input, Button, PageHeader, Empty, Alert } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import Admin from 'layouts/Admin.js';
 import AuthService from 'services/auth.service';
 import MachineService from 'services/machine.service';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getCookie } from 'utils/cookie';
 import { Select } from 'antd';
 const { Option } = Select;
 import { DatePicker } from 'antd'
 const { RangePicker } = DatePicker;
-
-import {ExportToExcel} from 'components/ExportToExcel'
+import { ExportToExcel } from 'components/ExportToExcel'
+import { useDataApi } from 'utils/data.hooks';
 
 export default function Index() {
-	const [spinner, setSpinner] = useState(false);
 	const [current, setCurrent] = useState(1);
-	const [pageSize, setPageSize] = useState(10);
 	const [form] = Form.useForm();
+
+	const [start, setStart] = useState('');
+	const [end, setEnd] = useState('');
+	const [query, setQuery] = useState({});
+
+	const url = 'http://172.104.163.254:8000/api/v1/machines/data';
+	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, query);
+	const [{ data: all_data, isError: isError2 }, doFetch2] = useDataApi(url);
+
+	// count: 28
+	// next: 2
+	// page_size: 12
+
+
 	// mock data 
 	const columns = [
 		{
@@ -41,10 +53,10 @@ export default function Index() {
 		},
 	];
 
-	const data = [];
+	const data2 = [];
 
 	for (let i = 1; i <= 100; i++) {
-		data.push({
+		data2.push({
 			machine_no: i,
 			machine_status: i / 2 ? 'on' : 'off',
 			start: new Date().toLocaleString(),
@@ -81,10 +93,13 @@ export default function Index() {
 		},
 	];
 
-	const PageChange = (current, pageSize) => {
-		console.log('current=', current, 'pagesize=', pageSize);
-		setCurrent(current);
-		setPageSize(pageSize);
+	const PageChange = (current, page_size) => {
+		console.log('current=', current, 'pagesize=', page_size);
+		// setQuery({ ...query, page: current });
+		console.log('query before',query);
+		console.log('{ ...query, page: current }',{ ...query, page: current });
+		setQuery({ ...query, page: current})
+		doFetch({ ...query, page: current });
 	}
 
 	const onFinish = (values) => {
@@ -95,28 +110,43 @@ export default function Index() {
 	const AdvancedSearchForm = () => {
 		const onFinish = (values) => {
 			console.log('Received values of form: ', values);
+			console.log('start', start);
+			console.log('end', end);
+			const params = {};
+			start && (params.start = start)
+			end && (params.end = end)
+			if (values?.machine_no?.length) {
+				const numbers = values?.machine_no?.join('-');
+				params.machine_no = numbers;
+			}
+			values?.machine_status && (params.machine_status = values?.machine_status);
+			setQuery({ ...query, ...params });
+			params.page=1;
+			doFetch({...params });
 		};
-		function onChange(value, dateString) {
-			console.log('Selected Time: ', value);
-			console.log('Formatted Selected Time: ', dateString);
-		}
 
 		function onOk(value) {
 			console.log('onOk: ', value);
 		}
 
 		const children = [];
-		for (let i = 0; i < data?.length; i++) {
-			children.push(
-				<Option key={data[i].machine_no}>
-					{data[i].machine_no}
-				</Option>
-			);
+		if (!isError2) {
+			let unique_machine_no = all_data?.map(m => m?.machine_no)?.filter((v, i, a) => a?.indexOf(v) === i);
+			// console.log('unique_machine_no: ', unique_machine_no);
+			for (let i = 0; i < unique_machine_no?.length; i++) {
+				children.push(
+					<Option key={unique_machine_no[i]}>
+						{unique_machine_no[i]}
+					</Option>
+				);
+			}
+
 		}
 
 		function handleChange(value) {
 			console.log(`selected ${value}`);
 		}
+
 		return (
 			<Form
 				form={form}
@@ -129,13 +159,13 @@ export default function Index() {
 						name={`start`}
 						label={`Start`}
 					>
-						<DatePicker showTime onChange={onChange} onOk={onOk} />
+						<DatePicker showTime onChange={(value, dateString) => { setStart(dateString) }} onOk={onOk} />
 					</Form.Item>
 					<Form.Item
 						name={`end`}
 						label={`end`}
 					>
-						<DatePicker showTime onChange={onChange} onOk={onOk} />
+						<DatePicker showTime onChange={(value, dateString) => { setEnd(dateString) }} onOk={onOk} />
 					</Form.Item>
 
 
@@ -186,12 +216,17 @@ export default function Index() {
 							}}
 							onClick={() => {
 								form.resetFields();
+								setQuery({})
+								setStart('')
+								setEnd('')
+								setCurrent(1);
+								doFetch({})
 							}}
 						>
 							Clear
 						</Button>
 
-						<ExportToExcel apiData={data} fileName={'machine-list'}/>
+						<ExportToExcel apiData={data} fileName={'machine-list'} />
 					</Col>
 				</Row>
 			</Form>
@@ -206,48 +241,39 @@ export default function Index() {
 				breadcrumb={{ routes }}
 				subTitle=""
 			/>
+
 			<AdvancedSearchForm />
-			<Spin spinning={spinner} size={'default'} className={`bg-white m-`}>
+			<Spin spinning={isLoading} size={'default'} className={`bg-white m-`}>
 				{
-					data?.length ?
-						<Table
-							{...state}
-							pagination={{ position: [state.top, state.bottom], onChange: PageChange, total: data?.length | 0, defaultCurrent: current | 1 }}
-							columns={tableColumns}
-							dataSource={state.hasData ? data : null}
-							className={`p-2 bg-white`}
+					isError ?
+						<Alert
+							message="Error occured!"
+							description={error || 'Something went wrong!'}
+							type="error"
+							showIcon
 						/>
 						:
-						<Empty className={`bg-white p-5`} description={'Data not found!'} />
-				}
 
+						data?.length ?
+							<Table
+								{...state}
+								key={(record=>record.index)}
+								pagination={{
+									position: [state.top, state.bottom],
+									onChange: PageChange,
+									pageSize: meta?.page_size,
+									total: meta?.count | 0,
+									defaultCurrent: current | 1
+								}}
+								columns={tableColumns}
+								dataSource={data || []}
+								className={`p-2 bg-white`}
+							/>
+							:
+							<Empty className={`bg-white p-5`} description={'Data not found!'} />
+				}
 			</Spin>
 		</>
 	);
 }
-
-export async function getServerSideProps(context) {
-	const isAuthenticated = AuthService.isAuthorized(context);
-	if (!isAuthenticated) {
-		return {
-			redirect: { destination: '/login', permanent: false },
-		};
-	}
-	const query = context?.query;
-	console.log('query', query);
-	const token = getCookie('mctoken', context);
-	try {
-		const response = await MachineService.getMachineData(query, token);;
-		const data = response?.data;
-		console.log('data', data);
-	} catch (error) {
-		const msg = error?.response?.data?.message || 'Something went working! please try again.';
-		console.log('error message ', msg);
-	}
-
-	return {
-		props: {},
-	};
-}
-
 Index.layout = Admin;
