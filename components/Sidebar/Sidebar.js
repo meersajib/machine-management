@@ -1,9 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { getCookie } from 'utils/cookie';
 
 export default function Sidebar(props) {
   const { navbarOpen } = props;
+  const usergroups = getCookie('mcgroups');
+  const groups = usergroups?.split(',');
 
   const [collapseShow, setCollapseShow] = React.useState('hidden');
   const router = useRouter();
@@ -128,7 +131,8 @@ export default function Sidebar(props) {
                     <i
                       className={
                         'fas fa-map-marked mr-2 text-sm ' +
-                        (router.pathname.indexOf('/offline-online-devices') !== -1
+                        (router.pathname.indexOf('/offline-online-devices') !==
+                        -1
                           ? 'opacity-75'
                           : 'text-blueGray-300')
                       }></i>{' '}
@@ -137,26 +141,28 @@ export default function Sidebar(props) {
                 </Link>
               </li>
 
-              <li className='items-center'>
-                <Link href='#'>
-                  <a
-                    className={
-                      'text-xs uppercase py-3 font-bold block ' +
-                      (router.pathname.indexOf('/admin/maps') !== -1
-                        ? 'text-lightBlue-500 hover:text-lightBlue-600'
-                        : 'text-white hover:text-blueGray-500')
-                    }>
-                    <i
+              {groups?.includes('Maintainer') ? (
+                <li className='items-center'>
+                  <Link href='#'>
+                    <a
                       className={
-                        'fas fa-map-marked mr-2 text-sm ' +
+                        'text-xs uppercase py-3 font-bold block ' +
                         (router.pathname.indexOf('/admin/maps') !== -1
-                          ? 'opacity-75'
-                          : 'text-blueGray-300')
-                      }></i>{' '}
-                    Parameter Data
-                  </a>
-                </Link>
-              </li>
+                          ? 'text-lightBlue-500 hover:text-lightBlue-600'
+                          : 'text-white hover:text-blueGray-500')
+                      }>
+                      <i
+                        className={
+                          'fas fa-map-marked mr-2 text-sm ' +
+                          (router.pathname.indexOf('/admin/maps') !== -1
+                            ? 'opacity-75'
+                            : 'text-blueGray-300')
+                        }></i>{' '}
+                      Parameter Data
+                    </a>
+                  </Link>
+                </li>
+              ) : null}
             </ul>
           </div>
         </div>
