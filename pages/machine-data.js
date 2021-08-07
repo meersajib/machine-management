@@ -78,6 +78,7 @@ export default function Index() {
 	}
 
 	const AdvancedSearchForm = () => {
+
 		const onFinish = (values) => {
 			const params = {};
 			start && (params.start = start)
@@ -131,7 +132,6 @@ export default function Index() {
 					>
 						<DatePicker showTime onChange={(value, dateString) => { setEnd(dateString) }} onOk={onOk} />
 					</Form.Item>
-
 
 					<Form.Item
 						name={`machine_no`}
@@ -221,7 +221,7 @@ export default function Index() {
 						data?.length ?
 							<Table
 								{...state}
-								key={(record=>record.index)}
+								key={'total_minutes'}
 								pagination={{
 									position: [state.top, state.bottom],
 									onChange: PageChange,

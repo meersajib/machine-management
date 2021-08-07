@@ -1,10 +1,14 @@
 import React from "react";
 import Chart from 'chart.js/auto';
+import { dateString } from 'utils';
 
 export default function CardPieChart({data}) {
 
   React.useEffect(() => {
 
+		console.log('data in pie chart', data);
+		
+		
 		const pie_data = {
 			labels: [
 				'Off Time',
@@ -12,7 +16,7 @@ export default function CardPieChart({data}) {
 			],
 			datasets: [{
 				label: 'Machines Efficiency',
-				data: [300, 50],
+				data: [Number(data?.total_off_time || 0).toFixed(0), Number(data?.total_on_time || 0).toFixed(0)],
 				backgroundColor: [
 					'rgb(255, 0, 0)',
 					'rgba(0, 255, 0)',
@@ -58,8 +62,11 @@ export default function CardPieChart({data}) {
             <canvas id="pie-chart"></canvas>
           </div>
 					<h5 className="mx-auto text-center font-semibold">
-						Total Efficiency 95%
+						Total Efficiency {Number(data?.efficiency).toFixed(2)} %
 					</h5>
+					<h6 className="mx-auto text-center mt-1">
+						{dateString(data?.start)} - { dateString(data?.end)}
+					</h6>
         </div>
       </div>
     </>

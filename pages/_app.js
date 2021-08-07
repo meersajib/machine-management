@@ -68,8 +68,7 @@ export default class MyApp extends App {
     }
 
 		let pageProps = {};
-		pageProps.token = token;
-
+		
 		if (Component.getInitialProps) {
 			pageProps = await Component.getInitialProps(ctx);
 		}
@@ -82,7 +81,6 @@ export default class MyApp extends App {
 		const Layout = Component.layout || (({ children }) => <>{children}</>);
 		return (
 			<React.Fragment>
-				{console.log('pageProps?.token=',pageProps?.token)}
 				<Head>
 					<meta
 						name='viewport'
