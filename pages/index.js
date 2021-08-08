@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import AuthService from 'services/auth.service';
 import MachineService from 'services/machine.service';
-import { getCookie } from 'utils/cookie';
+import { getCookie,deleteAllCookie } from 'utils/cookie';
 import { Spin } from 'antd';
 import { useRouter } from 'next/router';
 // layout for page

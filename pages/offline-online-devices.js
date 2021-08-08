@@ -6,6 +6,7 @@ const { Option } = Select;
 import { useDataApi } from 'utils/data.hooks';
 import { useRouter } from 'next/router';
 import AuthService from 'services/auth.service';
+import { deleteAllCookie } from 'utils/cookie';
 
 export default function OfflineOnlineDevices() {
 	const [current, setCurrent] = useState(1);

@@ -11,7 +11,7 @@ import CardBarChart from "components/Cards/CardBarChart.js";
 import CardPieChart from "components/Cards/CardPieChart.js";
 import CardMachineEfficiency from "components/Cards/CardMachineEfficiency.js";
 import AuthService from 'services/auth.service';
-
+import { deleteAllCookie } from 'utils/cookie';
 export default function Analytics() {
 	const [form] = Form.useForm();
 	const [start, setStart] = useState('');

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import AuthService from 'services/auth.service';
 import MachineService from 'services/machine.service';
-import { getCookie } from 'utils/cookie';
+import { getCookie,deleteAllCookie } from 'utils/cookie';
 import { Spin } from 'antd';
 import { useRouter } from 'next/router';
 // layout for page
@@ -18,7 +18,7 @@ export default function Index() {
   const [spinner, setSpinner] = useState(true);
 
 	useEffect(() => {
-		const authorized = AuthService.isAuthorized('/paremeter-data');
+		const authorized = AuthService.isAuthorized('/parameter-data');
 		if(!authorized) {
 			deleteAllCookie();
 			router.push('/login');
