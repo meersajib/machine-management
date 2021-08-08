@@ -18,4 +18,10 @@ const deleteCookie = (name, context = null) => {
   destroyCookie(context, name);
 };
 
-export { saveCookie, getCookie, deleteCookie };
+const deleteAllCookie = () => {
+  destroyCookie(null, 'mctoken');
+  destroyCookie(null, 'mcuser');
+  destroyCookie(null, 'mcgroups');
+};
+
+export { saveCookie, getCookie, deleteCookie,deleteAllCookie };

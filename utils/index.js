@@ -1,3 +1,6 @@
+import {getCookie} from 'utils/cookie';
+
+
 export const dateString = (date)=> new Date(date).toLocaleDateString(undefined, {  
   day:   'numeric',
   month: 'short',

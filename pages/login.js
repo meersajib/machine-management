@@ -1,9 +1,7 @@
-import React from 'react';
-import Link from 'next/link';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { message } from 'antd';
-
-import { saveCookie } from 'utils/cookie';
+import { useRouter } from 'next/router';
 
 // layout for page
 
@@ -13,12 +11,9 @@ import Auth from 'layouts/Auth.js';
 import AuthService from 'services/auth.service';
 
 const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
+	const router = useRouter();
+
+  const { register,handleSubmit,formState: { errors }} = useForm();
 
   const onSubmit = async (payload) => {
     const key = 'login';
@@ -32,7 +27,7 @@ const Login = () => {
         data.username = payload?.username;
         AuthService.login(data);
 
-        location.href = '/';
+        router.push('/');
 
         message.success({ content: 'Successfully login!', key, duration: 2 });
       }
@@ -43,6 +38,10 @@ const Login = () => {
       message.error({ content: msg, key, duration: 2 });
     }
   };
+
+	useEffect(() => {
+		router.prefetch('/')
+	})
 
   return (
     <>
@@ -108,23 +107,6 @@ const Login = () => {
                 </form>
               </div>
             </div>
-            {/* <div className='flex flex-wrap mt-6 relative'>
-              <div className='w-1/2'>
-                <a
-                  href='#pablo'
-                  onClick={(e) => e.preventDefault()}
-                  className='text-blueGray-200'>
-                  <small>Forgot password?</small>
-                </a>
-              </div>
-              <div className='w-1/2 text-right'>
-                <Link href='/auth/register'>
-                  <a href='#pablo' className='text-blueGray-200'>
-                    <small>Create new account</small>
-                  </a>
-                </Link>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>

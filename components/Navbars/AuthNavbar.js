@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import UserDropdown2 from 'components/Dropdowns/UserDropdown2';
+import UserDropdown from 'components/Dropdowns/UserDropDown';
 
 export default function Navbar(props) {
   const { setNavbarOpen, navbarOpen } = props;
@@ -18,7 +18,7 @@ export default function Navbar(props) {
           </div>
 
           <div>
-            <UserDropdown2 />
+            <UserDropdown />
           </div>
         </div>
       </nav>

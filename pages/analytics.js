@@ -5,17 +5,28 @@ import { Select } from 'antd';
 const { Option } = Select;
 import { DatePicker } from 'antd';
 import { useDataApi } from 'utils/data.hooks';
-
+import {useRouter} from 'next/router';
 
 import CardBarChart from "components/Cards/CardBarChart.js";
 import CardPieChart from "components/Cards/CardPieChart.js";
 import CardMachineEfficiency from "components/Cards/CardMachineEfficiency.js";
 
-export default function Index() {
+export default function Analytics() {
 	const [form] = Form.useForm();
 	const [start, setStart] = useState('');
 	const [end, setEnd] = useState('');
 	const [query, setQuery] = useState({});
+
+	const router = useRouter();
+	useEffect(() => {
+		const authorized = AuthService.isAuthorized('/analytics');
+		if(!authorized) {
+			deleteAllCookie();
+			router.push('/login');
+		}
+		console.log('authorized', authorized);
+	})
+
 
 	const url = 'http://172.104.163.254:8000/api/v1/machines/analytics';
 	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, query);
@@ -46,7 +57,7 @@ export default function Index() {
 				params.machine_no = numbers;
 			}
 
-			// values?.is_order && (params.is_order = values?.is_order);
+			values?.is_order && values.is_order==true && (params.is_order = values?.is_order);
 			setQuery({ ...query, ...params });
 			params.page = 1;
 			doFetch({ ...params });
@@ -107,20 +118,20 @@ export default function Index() {
 					</Form.Item>
 
 
-					{/* <Form.Item
+					<Form.Item
 						name={`is_order`}
 						label={`Sort by machine's efficiency`}
 					>
 						<Select
 							allowClear
 							placeholder="Select"
-							style={{ width: 100 }}
-							className='min-width-10'
+							style={{ width: 200 }}
+							className='min-width-150'
 						>
 							<Option value={true} key={true}>Most effient to least effient</Option>
 							<Option value={false} key={false}>Least effient to most effient</Option>
 						</Select>
-					</Form.Item> */}
+					</Form.Item>
 				</Space>
 
 				<Row>
@@ -217,4 +228,4 @@ export default function Index() {
 		</>
 	);
 }
-Index.layout = Admin;
+Analytics.layout = Admin;

@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 export default function CardMachineEfficiency({ data }) {
 	const [sorted, setSorted] = useState([])
 	useEffect(() => {
-		const sorted_data = data.sort((a, b) => Number(b.efficiency) - Number(a.efficiency))
-		setSorted(sorted_data);
+		// const sorted_data = data.sort((a, b) => Number(b.efficiency) - Number(a.efficiency))
+		// setSorted(sorted_data);
 	}, [data])
 	return (
 		<>
@@ -33,7 +33,7 @@ export default function CardMachineEfficiency({ data }) {
 						</thead>
 						<tbody>
 							{
-								sorted?.length ? sorted?.map((machine, index) => (
+								data?.length ? data?.map((machine, index) => (
 									<tr key={index}>
 										<th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
 											{machine?.machine_no}

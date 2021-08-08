@@ -13,11 +13,19 @@ import MqttSerialPort from 'components/MqttSerialPort';
 export default function Index() {
   const router = useRouter();
   const token = getCookie('mctoken');
-  const usergroups = getCookie('mcgroups');
-  const groups = usergroups?.split(',');
 
   const [machineList, setMachineList] = useState([]);
   const [spinner, setSpinner] = useState(true);
+
+	const router = useRouter();
+	useEffect(() => {
+		const authorized = AuthService.isAuthorized('/paremeter-data');
+		if(!authorized) {
+			deleteAllCookie();
+			router.push('/login');
+		}
+		console.log('authorized', authorized);
+	})
 
   useEffect(async () => {
     try {
