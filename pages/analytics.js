@@ -1,6 +1,6 @@
 import { Form, Space, Spin, Row, Col, Button, PageHeader, Alert, Empty } from 'antd';
 import Admin from 'layouts/Admin.js';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { Select } from 'antd';
 const { Option } = Select;
 import { DatePicker } from 'antd';
@@ -10,6 +10,7 @@ import {useRouter} from 'next/router';
 import CardBarChart from "components/Cards/CardBarChart.js";
 import CardPieChart from "components/Cards/CardPieChart.js";
 import CardMachineEfficiency from "components/Cards/CardMachineEfficiency.js";
+import AuthService from 'services/auth.service';
 
 export default function Analytics() {
 	const [form] = Form.useForm();

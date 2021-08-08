@@ -17,7 +17,6 @@ export default function Index() {
   const [machineList, setMachineList] = useState([]);
   const [spinner, setSpinner] = useState(true);
 
-	const router = useRouter();
 	useEffect(() => {
 		const authorized = AuthService.isAuthorized('/paremeter-data');
 		if(!authorized) {
