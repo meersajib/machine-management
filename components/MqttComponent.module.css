@@ -22,6 +22,7 @@ display: grid;
   justify-content: center;
   color: #fff;
   text-transform: uppercase;
+  margin: 0 auto;
 }
 .on_circle{
   background-color: green;

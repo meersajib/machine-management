@@ -23,10 +23,11 @@ export default class MachineService {
     return response?.data;
 	}
 	
-	static async getMachineList(token) {
+	static async getMachineList(token, current) {
+		console.log('currentttttttttt',current)
 		// console.log('token retrieved', token);
     const response = await axios.get(
-			'http://172.104.163.254:8000/api/v1/machines',
+			'http://172.104.163.254:8000/api/v1/machines?page_size=7&current='+current,
       {
 				headers: {
 					authorization: 'jwt ' + token,

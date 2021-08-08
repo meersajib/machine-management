@@ -22,24 +22,35 @@ class MqttComponent extends Component {
       this.client.subscribe('machine/+');
     });
     this.client.on('message', (topic, message) => {
-      this.handleJsonMessage(topic, message.toString());
-      // console.log(`topic ${topic} message ${message}`);
+      let time = new Date().toLocaleString(undefined, {
+    day:    'numeric',
+    month:  'numeric',
+    year:   'numeric',
+    hour:   '2-digit',
+    minute: '2-digit',
+});
+      this.handleJsonMessage(topic, message.toString(),time);
+      console.log(`topic ${topic} message ${message} time ${time}`);
     });
+    let machinesFromLocalStorage = localStorage.getItem('machines')
+    console.log('machinesFromLocalStorage',JSON.stringify(machinesFromLocalStorage))
   }
 
-  handleJsonMessage = (topic, message) => {
-    console.log('topic', topic)
-    console.log('message',message)
+  handleJsonMessage = (topic, message,time) => {
     const machine_no = topic.split('/')[1];
+    // const update_time = 1;
     let new_data = this.state.data;
     new_data[machine_no] = message;
     this.setState({ data: new_data });
+    console.log('dataaaaaaaa',this.state.data)
     this.props.machineList
       .filter((num) => num.machine_no == machine_no)
       .map((machine_item) => {
         machine_item.status = message;
+        machine_item.update_time = time;
       });
     this.setState({ machines: this.props.machineList });
+    localStorage.setItem('machines',JSON.stringify(this.props.machineList))
   };
 
   componentWillUnmount() {
@@ -48,6 +59,7 @@ class MqttComponent extends Component {
     }
   }
   render() {
+    console.log('machinesss',this.state.machines)
     return (
       <Fragment>
         {this.state.machines?.length ? (
@@ -65,12 +77,12 @@ class MqttComponent extends Component {
                   }`}>
                   {machine?.status}
                 </div>
-                <p>{machine?.machine_no}</p>
-                <p>{machine?.name}</p>
+                <p>No: {machine?.machine_no}</p>
+                <p>Updated : {machine?.update_time}</p>
+                <p>Name: {machine?.name}</p>
               </div>
             ))}
             </div>
-            {console.log('tttttttttt',this.props)}
             {this.props.loadMore ? 
               <button onClick={this.props.fetchData.bind(this)}>Load More...</button> : null
           }

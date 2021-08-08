@@ -10,16 +10,24 @@ import Admin from 'layouts/Admin.js';
 import MqttComponent from 'components/MqttComponent';
 
 export default function Index() {
+
+  
   const token = getCookie('mctoken');
   const [machineList, setMachineList] = useState([]);
   const [spinner, setSpinner] = useState(true);
-  const [loadMore,setLodMore] = useState(false)
+  const [loadMore, setLodMore] = useState(false)
+  const [current,setCurrent] = useState(1)
+
+  
+  
+  
 
   const fetchData = async () => {
+    setCurrent(current + 1)
     console.log('clickedddddddddddd')
  try {
-      const response = await MachineService.getMachineList(token);
-      setMachineList(response?.data);
+      const response = await MachineService.getMachineList(token,current);
+      setMachineList((machineList) => [...machineList,...response?.data]);
    setSpinner(false);
    console.log('responseeeeeee',response)
       if (response.meta_data.next != null) {
@@ -34,11 +42,10 @@ export default function Index() {
       console.log('error message ', msg);
     }
   }
-
+  
   useEffect(async () => {
    fetchData()
   }, []);
-
   return (
     <div className='h-screen'>
       {machineList?.length ? (
