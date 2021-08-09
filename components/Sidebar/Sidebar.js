@@ -14,10 +14,11 @@ export default function Sidebar(props) {
   return (
     <>
       <nav
-        className='md:left-64 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-blueGray-600 flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6'
+        className='className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6"'
         style={{
           transition: `all .3s`,
           left: navbarOpen ? `-16rem` : `0`,
+          backgroundColor: '#000000'
           // width: navbarOpen ? `0` : `16rem`,
         }}>
         <div className='md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto'>
@@ -65,9 +66,10 @@ export default function Sidebar(props) {
                         ? 'text-lightBlue-500 hover:text-lightBlue-600'
                         : 'text-white hover:text-blueGray-500')
                     }>
+                    
                     <i
                       className={
-                        'fas fa-tv mr-2 text-sm ' +
+                        'fas fa-tachometer-alt mr-2 text-sm ' +
                         (router.pathname === '/'
                           ? 'opacity-75'
                           : 'text-blueGray-300')
@@ -88,7 +90,7 @@ export default function Sidebar(props) {
                     }>
                     <i
                       className={
-                        'fas fa-tools mr-2 text-sm ' +
+                        'fas fa-table mr-2 text-sm ' +
                         (router.pathname.indexOf('/machine-data') !== -1
                           ? 'opacity-75'
                           : 'text-blueGray-300')
@@ -109,7 +111,7 @@ export default function Sidebar(props) {
                     }>
                     <i
                       className={
-                        'fas fa-table mr-2 text-sm ' +
+                        'fas fa-chart-pie mr-2 text-sm ' +
                         (router.pathname.indexOf('/analytics') !== -1
                           ? 'opacity-75'
                           : 'text-blueGray-300')
@@ -153,7 +155,7 @@ export default function Sidebar(props) {
                       }>
                       <i
                         className={
-                          'fas fa-map-marked mr-2 text-sm ' +
+                          'fas fa-chart-bar mr-2 text-sm ' +
                           (router.pathname.indexOf('/admin/maps') !== -1
                             ? 'opacity-75'
                             : 'text-blueGray-300')

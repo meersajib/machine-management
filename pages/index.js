@@ -41,12 +41,14 @@ export default function Index() {
 			const response = await MachineService.getMachineList(token,url);
 			setMachineList((machineList) => [...machineList,...response?.data]);
 			setSpinner(false);
-			// console.log('responseeeeeee', response)
+
 		} catch (error) {
 			const msg =
 				error?.response?.data?.message ||
 				'Something went working! please try again.';
 			console.log('error message ', msg);
+			deleteAllCookie();
+			router.push('/login');
 		}
 	}
 
@@ -54,22 +56,7 @@ export default function Index() {
 		fetchData()
 	}, []);
 
-	
-  
-    const handleJsonMessage = (topic, message,time) => {
-    const machine_no = topic.split('/')[1];
-    machineList
-      .filter((num) => num.machine_no == machine_no)
-      .map((machine_item) => {
-        machine_item.status = message;
-        machine_item.update_time = time;
-			});
-			setRenderMe(!renderMe)
-	};
-	
 
-	// =========================================
-	console.log('machineList',machineList)
 	return (
 		<div className='h-screen'>
 			{machineList?.length ? (
@@ -81,7 +68,7 @@ export default function Index() {
 						alignItems: 'center',
 						justifyContent: 'center'
 				}}>
-				<Spin spinning={spinner} size={'default'} className={`bg-white m-`} />
+				<img src='spinner.png' />
 				 </div>
 			)}
 		</div>

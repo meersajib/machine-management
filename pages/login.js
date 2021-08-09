@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { message } from 'antd';
 import { useRouter } from 'next/router';
+import { Image } from 'antd';
+
 
 // layout for page
 
@@ -47,7 +49,13 @@ const Login = () => {
     <>
       <div className='container mx-auto px-4 h-full'>
         <div className='flex content-center items-center justify-center h-full'>
-          <div className='w-full lg:w-4/12 px-4'>
+          <div className='w-full lg:w-4/12 px-4 text-center'>
+            <Image
+              preview={false}
+              width={100}
+              src="logo.png"
+            />
+            <h4 className='text-white active:bg-blueGray-600 text-sm font-bold uppercase mt-3 mb-3'>Welcome to HTEC Machine Management Dashboard</h4>
             <div className='relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0'>
               <div className='rounded-t mb-0 px-6 py-6'>
                 <div className='text-center mb-3'>
@@ -84,7 +92,7 @@ const Login = () => {
                       placeholder='Password'
                     />
                   </div>
-                  <div>
+                  {/* <div>
                     <label className='inline-flex items-center cursor-pointer'>
                       <input
                         id='customCheckLogin'
@@ -95,11 +103,14 @@ const Login = () => {
                         Remember me
                       </span>
                     </label>
-                  </div>
+                  </div> */}
 
                   <div className='text-center mt-6'>
                     <button
-                      className='bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150'
+                      className='text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150'
+                      style={{
+                        backgroundColor: '#000000'
+                      }}
                       type='submit'>
                       Sign In
                     </button>
