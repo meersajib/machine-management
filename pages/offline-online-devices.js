@@ -1,13 +1,27 @@
 import { Table, Form, Space, Spin, Row, PageHeader, Empty } from 'antd';
 import Admin from 'layouts/Admin.js';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { Select } from 'antd';
 const { Option } = Select;
 import { useDataApi } from 'utils/data.hooks';
-export default function Index() {
+import { useRouter } from 'next/router';
+import AuthService from 'services/auth.service';
+import { deleteAllCookie } from 'utils/cookie';
+
+export default function OfflineOnlineDevices() {
 	const [current, setCurrent] = useState(1);
 	const [form] = Form.useForm();
-	const [query, setQuery] = useState('online');
+	const [query, setQuery] = useState('offline');
+
+	const router = useRouter();
+	useEffect(() => {
+		const authorized = AuthService.isAuthorized('/offline-online-devices');
+		if(!authorized) {
+			deleteAllCookie();
+			router.push('/login');
+		}
+		console.log('authorized', authorized);
+	})
 
 	const url = 'http://172.104.163.254:8000/api/v1/machines/data';
 	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, {status:query});
@@ -140,4 +154,4 @@ export default function Index() {
 	);
 }
 
-Index.layout = Admin;
+OfflineOnlineDevices.layout = Admin;

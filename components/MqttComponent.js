@@ -32,8 +32,7 @@ class MqttComponent extends Component {
       this.handleJsonMessage(topic, message.toString(),time);
       console.log(`topic ${topic} message ${message} time ${time}`);
     });
-    let machinesFromLocalStorage = localStorage.getItem('machines')
-    console.log('machinesFromLocalStorage',JSON.stringify(machinesFromLocalStorage))
+   
   }
 
   handleJsonMessage = (topic, message,time) => {
@@ -49,8 +48,8 @@ class MqttComponent extends Component {
         machine_item.status = message;
         machine_item.update_time = time;
       });
-    this.setState({ machines: this.props.machineList });
-    localStorage.setItem('machines',JSON.stringify(this.props.machineList))
+    // this.setState({ machines: this.props.machineList });
+    // this.setState({ machines: [...this.state.machines, ...[1,2,3] ] })   
   };
 
   componentWillUnmount() {
@@ -59,13 +58,12 @@ class MqttComponent extends Component {
     }
   }
   render() {
-    console.log('machinesss',this.state.machines)
     return (
       <Fragment>
-        {this.state.machines?.length ? (
+        {this.props?.machineList?.length ? (
           <React.Fragment>
           <div className={styles.grid_container}>
-            {this.state.machines?.map((machine, index) => (
+            {this.props?.machineList?.map((machine, index) => (
               <div key={index} className={styles.machine_container}>
                 <div
                   className={`${styles.status_circle} ${
@@ -75,10 +73,10 @@ class MqttComponent extends Component {
                       ? styles.off_circle
                       : styles.no_signal
                   }`}>
-                  {machine?.status}
+                  {machine?.status ? machine?.status : `No Signal`}
                 </div>
                 <p>No: {machine?.machine_no}</p>
-                <p>Updated : {machine?.update_time}</p>
+                {machine?.update_time ? <p>Updated : {machine?.update_time}</p> : null}
                 <p>Name: {machine?.name}</p>
               </div>
             ))}

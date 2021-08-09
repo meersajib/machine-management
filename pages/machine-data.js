@@ -1,19 +1,33 @@
 import { Table,Form, Space, Spin, Row, Col, Button, PageHeader, Empty, Alert } from 'antd';
 import Admin from 'layouts/Admin.js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Select } from 'antd';
 const { Option } = Select;
 import { DatePicker } from 'antd';
 import { ExportToExcel } from 'components/ExportToExcel'
 import { useDataApi } from 'utils/data.hooks';
+import { deleteAllCookie } from 'utils/cookie';
+import AuthService from 'services/auth.service';
+import { useRouter } from 'next/router'
 
-export default function Index() {
+export default function MachineDate() {
+	
 	const [current, setCurrent] = useState(1);
 	const [form] = Form.useForm();
 
 	const [start, setStart] = useState('');
 	const [end, setEnd] = useState('');
 	const [query, setQuery] = useState({});
+
+	const router = useRouter();
+	useEffect(() => {
+		const authorized = AuthService.isAuthorized('/machine-data');
+		if(!authorized) {
+			deleteAllCookie();
+			router.push('/login');
+		}
+		console.log('authorized', authorized);
+	})
 
 	const url = 'http://172.104.163.254:8000/api/v1/machines/data';
 	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, query);
@@ -78,6 +92,7 @@ export default function Index() {
 	}
 
 	const AdvancedSearchForm = () => {
+
 		const onFinish = (values) => {
 			const params = {};
 			start && (params.start = start)
@@ -131,7 +146,6 @@ export default function Index() {
 					>
 						<DatePicker showTime onChange={(value, dateString) => { setEnd(dateString) }} onOk={onOk} />
 					</Form.Item>
-
 
 					<Form.Item
 						name={`machine_no`}
@@ -221,7 +235,7 @@ export default function Index() {
 						data?.length ?
 							<Table
 								{...state}
-								key={(record=>record.index)}
+								key={'total_minutes'}
 								pagination={{
 									position: [state.top, state.bottom],
 									onChange: PageChange,
@@ -240,4 +254,4 @@ export default function Index() {
 		</>
 	);
 }
-Index.layout = Admin;
+MachineDate.layout = Admin;

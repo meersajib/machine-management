@@ -31,5 +31,6 @@ display: grid;
   background-color: red;
 }
 .no_signal{
-  background-color: black;
+  background-color: rgb(207 226 243);
+  color: #000;
 }

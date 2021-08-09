@@ -2,7 +2,7 @@
   "name": "machine-management",
   "version": "1.0.0",
   "description": "Machine Management Project",
-  "repository": "https://github.com/meersajib/machine-management",
+  "repository": "https://github.com/HTEC-BD/machine_management_frontend",
   "license": "UNLICENSED",
   "contributors": [
     "Meer Sajib",
@@ -34,7 +34,7 @@
     "start": "next start",
     "build": "next build",
     "dev": "next dev",
-    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm run build:tailwind && npm run dev",
+    "install:clean": "rm -rf node_modules/ && rm -rf .next/ && rm -rf package-lock.json && rm -rf yarn.lock && yarn && yarn build:tailwind && yarn dev",
     "build:tailwind": "tailwind build styles/index.css -o styles/tailwind.css"
   },
   "eslintConfig": {
