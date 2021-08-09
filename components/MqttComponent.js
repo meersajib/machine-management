@@ -15,8 +15,8 @@ class MqttComponent extends Component {
 
   componentDidMount() {
     this.client = mqtt.connect('mqtt://172.104.163.254:8083');
-    this.client.options.username = 'shafik';
-    this.client.options.password = 'shafik';
+    this.client.options.username = process.env.NEXT_PUBLIC_USERNAME;
+    this.client.options.password = process.env.NEXT_PUBLIC_USERNAME;
     this.client.on('connect', () => {
       console.log('connected');
       this.client.subscribe('machine/+');

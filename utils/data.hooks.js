@@ -13,6 +13,7 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 	const [error, setError] = useState('');
 
 	const router = useRouter();
+	const host = process.env.NEXT_PUBLIC_HOST;
 
 	useEffect(() => {
 		console.log('query in hooks',query);
@@ -22,7 +23,7 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 			setIsError(false);
 			setIsLoading(true);
 			try {
-				const result = await axios.get(url, {
+				const result = await axios.get(`${host}/${url}`, {
 					headers: {
 						authorization: 'jwt ' + token
 					},

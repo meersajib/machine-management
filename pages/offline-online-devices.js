@@ -23,7 +23,7 @@ export default function OfflineOnlineDevices() {
 		console.log('authorized', authorized);
 	})
 
-	const url = 'http://172.104.163.254:8000/api/v1/machines/data';
+	const url = 'api/v1/machines/data';
 	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, {status:query});
 
 	// mock data 
