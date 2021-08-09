@@ -123,9 +123,6 @@ export default function MachineDate() {
 			}
 
 		}
-
-	
-
 		return (
 			<Form
 				form={form}
@@ -202,8 +199,7 @@ export default function MachineDate() {
 							}}
 						>
 							Clear
-						</Button>
-
+						</Button>	
 						<ExportToExcel apiData={data} fileName={'machine-list'} />
 					</Col>
 				</Row>

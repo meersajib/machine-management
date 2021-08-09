@@ -26,6 +26,7 @@ export default function Index() {
 		}
 		console.log('authorized', authorized);
 	})
+	
 
 	const fetchData = async () => {
 		console.log('clickedddddddddddd')

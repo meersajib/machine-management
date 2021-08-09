@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getCookie } from 'utils/cookie';
+import { getCookie,deleteAllCookie } from 'utils/cookie';
+import { useRouter } from 'next/router';
 
 export const useDataApi = (initialUrl, initialquery = {}) => {
 	const [data, setData] = useState([]);
@@ -10,6 +11,8 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isError, setIsError] = useState(false);
 	const [error, setError] = useState('');
+
+	const router = useRouter();
 
 	useEffect(() => {
 		console.log('query in hooks',query);
@@ -32,7 +35,14 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 
 			} catch (error) {
 				setIsError(true);
-				setError(error?.response?.data?.Message)
+				setError(error?.response?.data?.message);
+
+				console.log('error in data hooks000', error?.response?.status);
+				if(error?.response?.status==403){
+					deleteAllCookie();
+					router.push('/login');
+				}
+				
 			}
 
 			setIsLoading(false);
