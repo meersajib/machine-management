@@ -29,11 +29,11 @@ export default function Analytics() {
 	})
 
 
-	const url = 'http://172.104.163.254:8000/api/v1/machines/analytics';
+	const url = 'api/v1/machines/analytics';
 	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, query);
 	const [{ data: all_data, isError: isError2 }, doFetch2] = useDataApi(url);
 
-	const pie_url = 'http://172.104.163.254:8000/api/v1/machines/total-analytics';
+	const pie_url = 'api/v1/machines/total-analytics';
 	const [{ data: dataPie, isError: isErrorPie, isLoading: isLoadingPie }, doFetchPie] = useDataApi(pie_url, query);
 
 	const routes = [

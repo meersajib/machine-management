@@ -29,7 +29,7 @@ export default function MachineDate() {
 		console.log('authorized', authorized);
 	})
 
-	const url = 'http://172.104.163.254:8000/api/v1/machines/data';
+	const url = 'api/v1/machines/data';
 	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, query);
 	const [{ data: all_data, isError: isError2 }, doFetch2] = useDataApi(url);
 
@@ -123,9 +123,6 @@ export default function MachineDate() {
 			}
 
 		}
-
-	
-
 		return (
 			<Form
 				form={form}
@@ -202,8 +199,7 @@ export default function MachineDate() {
 							}}
 						>
 							Clear
-						</Button>
-
+						</Button>	
 						<ExportToExcel apiData={data} fileName={'machine-list'} />
 					</Col>
 				</Row>
