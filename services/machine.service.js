@@ -1,10 +1,12 @@
 import axios from 'axios';
 export default class MachineService {
 
-	static async getMachineList(token,page) {
+	static async getMachineList(token, url) {
+		const host = process.env.NEXT_PUBLIC_HOST;
+
+		console.log('env host',host);
 		// console.log('token retrieved', token);
-    const response = await axios.get(
-			'http://172.104.163.254:8000/api/v1/machines?page_size=1&page='+page,
+    const response = await axios.get(`${host}/${url}`,
       {
 				headers: {
 					authorization: 'jwt ' + token,

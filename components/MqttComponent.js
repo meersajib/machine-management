@@ -48,8 +48,7 @@ class MqttComponent extends Component {
         machine_item.status = message;
         machine_item.update_time = time;
       });
-    // this.setState({ machines: this.props.machineList });
-    // this.setState({ machines: [...this.state.machines, ...[1,2,3] ] })   
+    this.setState({ machines: this.props.machineList });
   };
 
   componentWillUnmount() {
@@ -60,10 +59,10 @@ class MqttComponent extends Component {
   render() {
     return (
       <Fragment>
-        {this.props?.machineList?.length ? (
+        {this?.state?.machines?.length ? (
           <React.Fragment>
           <div className={styles.grid_container}>
-            {this.props?.machineList?.map((machine, index) => (
+            {this?.state?.machines?.map((machine, index) => (
               <div key={index} className={styles.machine_container}>
                 <div
                   className={`${styles.status_circle} ${
@@ -81,9 +80,6 @@ class MqttComponent extends Component {
               </div>
             ))}
             </div>
-            {this.props.loadMore ? 
-              <button onClick={this.props.fetchData.bind(this)}>Load More...</button> : null
-          }
             </React.Fragment>
         ) : null}
       </Fragment>
