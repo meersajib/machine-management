@@ -11,14 +11,16 @@ import { Empty } from 'antd';
 
 import Admin from 'layouts/Admin.js';
 import MqttSerialPort from 'components/MqttSerialPort';
+import { useStatus } from 'Context/StatusContext';
 
 export default function Index() {
   const router = useRouter();
   const token = getCookie('mctoken');
   const url = `api/v1/machines`;
-  const [noData,setNoData] = useState(false)
+  const [noData, setNoData] = useState(false)
+  const [status, setStatus] = useState(false);
 
-
+  const {setConnected,connected} = useStatus()
   const [machineList, setMachineList] = useState([]);
   const [spinner, setSpinner] = useState(true);
 
@@ -27,8 +29,8 @@ export default function Index() {
 		if(!authorized) {
 			deleteAllCookie();
 			router.push('/login');
-		}
-		console.log('authorized', authorized);
+    }
+    // console.log('authorized', authorized);
 	})
 
   useEffect(async () => {
@@ -45,10 +47,18 @@ export default function Index() {
 
     }
   }, []);
+  
+
+  if (status) {
+    setConnected(true);
+  } else {
+    setConnected(false)
+  }
+
 
   return (
     <div className='h-screen'>
-        {!noData ?  <MqttSerialPort machineList={machineList} /> : <Empty /> }
+        {!noData ?  <MqttSerialPort setStatus={setStatus} machineList={machineList} /> : <Empty /> }
     </div>
   );
 }

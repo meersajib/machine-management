@@ -6,8 +6,7 @@ import { getCookie,deleteAllCookie } from 'utils/cookie';
 import { Spin } from 'antd';
 import { useRouter } from 'next/router';
 import { Empty } from 'antd';
-import { useStateValue } from 'Context/StateProvider';
-import { actionTypes } from 'Context/reducer';
+
 
 
 
@@ -16,19 +15,20 @@ import { actionTypes } from 'Context/reducer';
 
 import Admin from 'layouts/Admin.js';
 import MqttComponent from 'components/MqttComponent';
+import { useStatus } from 'Context/StatusContext';
 
 export default function Index() {
 	const token = getCookie('mctoken');
 	const [machineList, setMachineList] = useState([]);
 	const [spinner, setSpinner] = useState(true);
 	const [noData, setNoData] = useState(false)
-	const [state,dispatch] = useStateValue()
+	const [status,setStatus] = useState(false)
 
 	
 
 
 	const router = useRouter();
-
+  const {setConnected} = useStatus()
 	useEffect(() => {
 		const authorized = AuthService.isAuthorized('/');
 		if (!authorized) {
@@ -60,13 +60,20 @@ export default function Index() {
 	useEffect(async () => {
 		fetchData()
 	}, []);
+ 
 
+	console.log('statusssssssssssss', status)
+	if (status) {
+		setConnected(true)
+	} else {
+		setConnected(false)
+	}
 
 	return (
 		<div className='h-screen'>
 			{!noData ? <Fragment style={{alignItems: 'center'}}>
 				{machineList?.length ? (
-				<MqttComponent dispatch={dispatch} actionTypes={actionTypes} machineList={machineList} />
+				<MqttComponent setStatus={setStatus} machineList={machineList} />
 			) : (
 					<div style={{
 						display: 'grid',

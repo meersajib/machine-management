@@ -1,8 +1,20 @@
-import React from 'react'
+import { createContext, useContext, useState } from 'react';
 
-const StatusContext = React.createContext()
+const StatusContext = createContext()
 
-export const StatusProvider = StatusContext.Provider
-export const StatusConsumer = StatusContext.Consumer
+const StatusContextProvider = StatusContext.Provider;
 
-export default StatusContext
+function StatusProvider({ children }) {
+  const [connected, setConnected] = useState(false);
+  
+  return (
+    <StatusContextProvider value={{connected,setConnected}}>{ children }</StatusContextProvider>
+  )
+}
+
+function useStatus() {
+  const all = useContext(StatusContext)
+  return all;
+}
+
+export { StatusProvider , useStatus};

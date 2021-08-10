@@ -13,15 +13,9 @@ export default function Sidebar(props) {
 
   return (
     <>
-      <nav
-        className='className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6"'
-        style={{
-          transition: `all .3s`,
-          left: navbarOpen ? `-16rem` : `0`,
-          backgroundColor: '#000000'
-          // width: navbarOpen ? `0` : `16rem`,
-        }}>
-        <div className='md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto'>
+      <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-black flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+        <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
+          <div className='md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto'>
           <Link href='/'>
             <a className='md:block text-left md:pb-2 text-white mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-2 px-0'>
               Machine Management
@@ -167,7 +161,8 @@ export default function Sidebar(props) {
               ) : null}
             </ul>
           </div>
-        </div>
+          </div>
+          </div>
       </nav>
     </>
   );

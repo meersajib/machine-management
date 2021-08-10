@@ -5,6 +5,7 @@ import { notification } from 'antd';
 
 
 
+
 class MqttComponent extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +13,6 @@ class MqttComponent extends Component {
       data: {},
       macnines: [],
       spinner: false,
-      connectionStatus: false
     };
   }
 
@@ -26,6 +26,7 @@ class MqttComponent extends Component {
       console.log('connected');
       setTimeout(() => {
         this.openNotificationWithIcon('success')
+        this.props.setStatus(true)
       }, 29000);
       this.client.subscribe('machine/+');
     });
@@ -50,7 +51,7 @@ class MqttComponent extends Component {
     let new_data = this.state.data;
     new_data[machine_no] = message;
     this.setState({ data: new_data });
-    console.log('dataaaaaaaa',this.state.data)
+    // console.log('dataaaaaaaa',this.state.data)
       this.props.machineList
       .filter((num) => num.machine_no == machine_no)
       .map((machine_item) => {
@@ -59,10 +60,7 @@ class MqttComponent extends Component {
       });
       this.setState({ machines: this.props.machineList });
     }, 30000);
-     this.props.dispatch({
-      type: this.props.actionTypes.SET_CONNECTION_STATUS,
-      connectionStatus: true,
-    })
+    
 
   };
 
