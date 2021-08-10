@@ -49,9 +49,12 @@ class MqttSerailPort extends Component {
 
     return (
       <React.Fragment>        
-        {Object.entries(this.state.data)?.length ? <ParameterDataTable data={this.state.data} /> : <div className='text-center'>
-        <img src='spinner.png' />
-        </div>}
+        {Object.entries(this.state.data)?.length ? <ParameterDataTable data={this.state.data} /> : 
+          <div>
+            <img style={{
+              margin: '0 auto'
+            }} src='spinner.png' />
+        </div> }
       </React.Fragment>
     );
   }

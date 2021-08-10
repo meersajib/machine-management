@@ -3,12 +3,13 @@ import { useState } from 'react';
 import Sidebar from 'components/Sidebar/Sidebar.js';
 import FooterAdmin from 'components/Footers/FooterAdmin.js';
 import Navbar from 'components/Navbars/AuthNavbar';
+import {useStateValue} from 'Context/StateProvider'
 
 export default function Admin({ children }) {
   const [navbarOpen, setNavbarOpen] = useState(false);
-  
+  const [{connectionStatus},dispatch] = useStateValue()
 
-  return (
+  return (console.log('connectionStatus',connectionStatus),
     <>
       <Sidebar navbarOpen={navbarOpen} />
       <div

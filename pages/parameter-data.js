@@ -5,6 +5,8 @@ import MachineService from 'services/machine.service';
 import { getCookie,deleteAllCookie } from 'utils/cookie';
 import { Spin } from 'antd';
 import { useRouter } from 'next/router';
+import { Empty } from 'antd';
+
 // layout for page
 
 import Admin from 'layouts/Admin.js';
@@ -14,6 +16,8 @@ export default function Index() {
   const router = useRouter();
   const token = getCookie('mctoken');
   const url = `api/v1/machines`;
+  const [noData,setNoData] = useState(false)
+
 
   const [machineList, setMachineList] = useState([]);
   const [spinner, setSpinner] = useState(true);
@@ -37,12 +41,14 @@ export default function Index() {
         error?.response?.data?.message ||
         'Something went working! please try again.';
       console.log('error message ', msg);
+      setNoData(true)
+
     }
   }, []);
 
   return (
     <div className='h-screen'>
-        <MqttSerialPort machineList={machineList} />
+        {!noData ?  <MqttSerialPort machineList={machineList} /> : <Empty /> }
     </div>
   );
 }

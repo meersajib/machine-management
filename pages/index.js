@@ -5,7 +5,9 @@ import MachineService from 'services/machine.service';
 import { getCookie,deleteAllCookie } from 'utils/cookie';
 import { Spin } from 'antd';
 import { useRouter } from 'next/router';
-import { useDataApi } from 'utils/data.hooks';
+import { Empty } from 'antd';
+import { useStateValue } from 'Context/StateProvider';
+import { actionTypes } from 'Context/reducer';
 
 
 
@@ -19,10 +21,14 @@ export default function Index() {
 	const token = getCookie('mctoken');
 	const [machineList, setMachineList] = useState([]);
 	const [spinner, setSpinner] = useState(true);
+	const [noData, setNoData] = useState(false)
+	const [state,dispatch] = useStateValue()
+
 	
 
 
 	const router = useRouter();
+
 	useEffect(() => {
 		const authorized = AuthService.isAuthorized('/');
 		if (!authorized) {
@@ -47,8 +53,7 @@ export default function Index() {
 				error?.response?.data?.message ||
 				'Something went working! please try again.';
 			console.log('error message ', msg);
-			deleteAllCookie();
-			router.push('/login');
+			setNoData(true)
 		}
 	}
 
@@ -59,8 +64,9 @@ export default function Index() {
 
 	return (
 		<div className='h-screen'>
-			{machineList?.length ? (
-				<MqttComponent machineList={machineList} />
+			{!noData ? <Fragment style={{alignItems: 'center'}}>
+				{machineList?.length ? (
+				<MqttComponent dispatch={dispatch} actionTypes={actionTypes} machineList={machineList} />
 			) : (
 					<div style={{
 						display: 'grid',
@@ -68,9 +74,10 @@ export default function Index() {
 						alignItems: 'center',
 						justifyContent: 'center'
 				}}>
-				<img src='spinner.png' />
+				<img style={{margin: '0 auto'}} src='spinner.png' />
 				 </div>
 			)}
+			</Fragment> : <Empty /> }
 		</div>
 	);
 }

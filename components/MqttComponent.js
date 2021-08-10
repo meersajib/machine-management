@@ -59,6 +59,10 @@ class MqttComponent extends Component {
       });
       this.setState({ machines: this.props.machineList });
     }, 30000);
+     this.props.dispatch({
+      type: this.props.actionTypes.SET_CONNECTION_STATUS,
+      connectionStatus: true,
+    })
 
   };
 

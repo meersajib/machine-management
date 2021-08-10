@@ -4,6 +4,8 @@ import 'antd/dist/antd.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'styles/tailwind.css';
 import 'styles/global.css';
+import { StateProvider } from 'Context/StateProvider';
+import reducer, { initialState } from 'Context/reducer';
 
 // Router.events.on('routeChangeStart', () => {
 //   ReactDOM.render(
@@ -34,10 +36,11 @@ function MyApp({ Component, pageProps }) {
 					/>
 					<title>Machine Management</title>
 				</Head>
+				  <StateProvider initialState={initialState} reducer={reducer}>
 					<Layout>
 						<Component {...pageProps} />
 					</Layout>
-
+					</StateProvider>
 			</React.Fragment>
 		);
 }
