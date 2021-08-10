@@ -10,27 +10,30 @@ class MqttSerailPort extends Component {
       data: []
     }
   }
-
+ 
 
 
   componentDidMount() {
-    this.client = mqtt.connect('mqtt://172.104.163.254:8083');
-    this.client.options.username = 'shafik';
-    this.client.options.password = 'shafik';
+    this.client = mqtt.connect(process.env.NEXT_PUBLIC_MQT);
+    this.client.options.username = process.env.NEXT_PUBLIC_USERNAME;
+    this.client.options.password = process.env.NEXT_PUBLIC_USERNAME;
     this.client.on("connect", () => {
       console.log("connected");
       this.client.subscribe("htec/+");
     });
     this.client.on('message', (topic, message) => {
       this.handleJsonMessage(topic, message.toString());
+      console.log(`message ${message.toString()} topic ${topic}`)
     })
   }
 
   handleJsonMessage = (topic, message) => {
+   setTimeout(() => {
     const machine_no = topic.split("/")[1];
     let new_data =this.state.data;
     new_data[machine_no] = message;
     this.setState({data: new_data});
+   }, 3000);
   }
 
  
@@ -46,8 +49,10 @@ class MqttSerailPort extends Component {
 
     return (
       <React.Fragment>        
-          <ParameterDataTable data={this.state.data} />
-        </React.Fragment>
+        {Object.entries(this.state.data)?.length ? <ParameterDataTable data={this.state.data} /> : <div className='text-center'>
+        <img src='spinner.png' />
+        </div>}
+      </React.Fragment>
     );
   }
 }

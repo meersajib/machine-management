@@ -13,6 +13,7 @@ import MqttSerialPort from 'components/MqttSerialPort';
 export default function Index() {
   const router = useRouter();
   const token = getCookie('mctoken');
+  const url = `api/v1/machines`;
 
   const [machineList, setMachineList] = useState([]);
   const [spinner, setSpinner] = useState(true);
@@ -28,7 +29,7 @@ export default function Index() {
 
   useEffect(async () => {
     try {
-      const response = await MachineService.getMachineList(token);
+      const response = await MachineService.getMachineList(token,url);
       setMachineList(response?.data);
       setSpinner(false);
     } catch (error) {
@@ -41,11 +42,7 @@ export default function Index() {
 
   return (
     <div className='h-screen'>
-      {machineList?.length ? (
         <MqttSerialPort machineList={machineList} />
-      ) : (
-        <Spin spinning={spinner} size={'default'} className={`bg-white m-`} />
-      )}
     </div>
   );
 }

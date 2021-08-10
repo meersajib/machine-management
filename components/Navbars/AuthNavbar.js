@@ -6,7 +6,7 @@ export default function Navbar(props) {
 
   return (
     <>
-      <nav className='bg-blueGray-700 top-0 sticky z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg'>
+      <nav className='top-0 sticky z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg' style={{backgroundColor: '#000000'}}>
         <div className='w-full px-4 mx-auto flex flex-wrap items-center justify-between'>
           <div>
             <button

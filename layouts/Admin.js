@@ -6,6 +6,7 @@ import Navbar from 'components/Navbars/AuthNavbar';
 
 export default function Admin({ children }) {
   const [navbarOpen, setNavbarOpen] = useState(false);
+  
 
   return (
     <>
