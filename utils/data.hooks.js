@@ -16,7 +16,7 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 	const host = process.env.NEXT_PUBLIC_HOST;
 
 	useEffect(() => {
-		console.log('query in hooks',query);
+		console.log('query in hooks-----',query);
 		const token = getCookie('mctoken', null);
 
 		const fetchData = async () => {

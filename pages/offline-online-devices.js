@@ -37,17 +37,9 @@ export default function OfflineOnlineDevices() {
 			dataIndex: 'machine_status',
 		},
 		{
-			title: 'Start Time',
-			dataIndex: 'start',
-		},
-		{
-			title: 'End Time',
+			title: 'Last Update',
 			dataIndex: 'end',
-		},
-		{
-			title: 'Total Minutes',
-			dataIndex: 'total_minutes',
-		},
+		}
 	];
 
 	const state = {
