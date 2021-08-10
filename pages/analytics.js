@@ -1,11 +1,11 @@
 import { Form, Space, Spin, Row, Col, Button, PageHeader, Alert, Empty } from 'antd';
 import Admin from 'layouts/Admin.js';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Select } from 'antd';
 const { Option } = Select;
 import { DatePicker } from 'antd';
 import { useDataApi } from 'utils/data.hooks';
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 
 import CardBarChart from "components/Cards/CardBarChart.js";
 import CardPieChart from "components/Cards/CardPieChart.js";
@@ -14,14 +14,16 @@ import AuthService from 'services/auth.service';
 import { deleteAllCookie } from 'utils/cookie';
 export default function Analytics() {
 	const [form] = Form.useForm();
+	const [form2] = Form.useForm();
 	const [start, setStart] = useState('');
 	const [end, setEnd] = useState('');
 	const [query, setQuery] = useState({});
+	const [query3, setQuery3] = useState({});
 
 	const router = useRouter();
 	useEffect(() => {
 		const authorized = AuthService.isAuthorized('/analytics');
-		if(!authorized) {
+		if (!authorized) {
 			deleteAllCookie();
 			router.push('/login');
 		}
@@ -32,6 +34,7 @@ export default function Analytics() {
 	const url = 'api/v1/machines/analytics';
 	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, query);
 	const [{ data: all_data, isError: isError2 }, doFetch2] = useDataApi(url);
+	const [{ data: effecient_data, isError: isError3,isLoading:isLoading3 }, doFetch3] = useDataApi(url);
 
 	const pie_url = 'api/v1/machines/total-analytics';
 	const [{ data: dataPie, isError: isErrorPie, isLoading: isLoadingPie }, doFetchPie] = useDataApi(pie_url, query);
@@ -57,9 +60,6 @@ export default function Analytics() {
 				const numbers = values?.machine_no?.join('-');
 				params.machine_no = numbers;
 			}
-
-			values?.is_order && values.is_order==true && (params.is_order = values?.is_order);
-			setQuery({ ...query, ...params });
 			params.page = 1;
 			doFetch({ ...params });
 			doFetchPie({ ...params });
@@ -117,22 +117,6 @@ export default function Analytics() {
 							{children}
 						</Select>
 					</Form.Item>
-
-
-					<Form.Item
-						name={`is_order`}
-						label={`Sort by machine's efficiency`}
-					>
-						<Select
-							allowClear
-							placeholder="Select"
-							style={{ width: 200 }}
-							className='min-width-150'
-						>
-							<Option value={true} key={true}>Most effient to least effient</Option>
-							<Option value={false} key={false}>Least effient to most effient</Option>
-						</Select>
-					</Form.Item>
 				</Space>
 
 				<Row>
@@ -164,6 +148,15 @@ export default function Analytics() {
 			</Form>
 		);
 	};
+
+	const onEffecientFilter = (values) => {
+		let params = {};
+		values?.order && (params.order = values?.order);
+		console.log('params', params);
+		setQuery3({...params });
+		doFetch3({ ...params });
+	}
+
 
 	return (
 		<>
@@ -214,11 +207,54 @@ export default function Analytics() {
 						</Spin>
 
 
-						<Spin spinning={isLoading} size={'default'} className={`bg-white m-`}>
-							{data?.length ?
+						<Form
+							form={form2}
+							name="advanced_search"
+							onFinish={onEffecientFilter}
+							className="bg-white p-3 mb-3 mt-3"
+						>
+							<Space direction='horizontal' size={12} wrap={true} >
+								
+								<Form.Item
+									name={`order`}
+									label={`Sort by machine's efficiency`}
+								>
+									<Select
+										allowClear
+										placeholder="Select"
+										style={{ width: 200 }}
+										className='min-width-150'
+									>
+										<Option value={'desc'} key={'desc'}>Most effient to least effient</Option>
+										<Option value={'asc'} key={'asc'}>Least effient to most effient</Option>
+									</Select>
+								</Form.Item>
+
+								<Form.Item>
+								<Button className={'mr-2'} type="primary" htmlType="submit">
+										Search
+									</Button>
+									<Button
+										onClick={() => {
+											form2.resetFields();
+											setQuery3({})
+											doFetch3({})
+										}}
+									>
+										Clear
+									</Button>
+								</Form.Item>
+								
+							</Space>
+
+							
+						</Form>
+
+						<Spin spinning={isLoading3} size={'default'} className={`bg-white m-`}>
+							{effecient_data?.length ?
 								<div className="flex flex-wrap mt-4">
 									<div className="w-full px-4">
-										<CardMachineEfficiency data={data} />
+										<CardMachineEfficiency data={effecient_data} />
 									</div>
 								</div>
 								: <Empty />}

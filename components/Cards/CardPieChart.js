@@ -18,8 +18,8 @@ export default function CardPieChart({data}) {
 				label: 'Machines Efficiency',
 				data: [Number(data?.total_off_time || 0).toFixed(0), Number(data?.total_on_time || 0).toFixed(0)],
 				backgroundColor: [
-					'rgb(255, 0, 0)',
-					'rgba(0, 255, 0)',
+					'#FF0000',
+					'#008000',
 				],
 				hoverOffset: 4
 			}]

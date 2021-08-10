@@ -1,4 +1,4 @@
-import { Table,Form, Space, Spin, Row, Col, Button, PageHeader, Empty, Alert } from 'antd';
+import { Table, Form, Space, Spin, Row, Col, Button, PageHeader, Empty, Alert } from 'antd';
 import Admin from 'layouts/Admin.js';
 import { useEffect, useState } from 'react';
 import { Select } from 'antd';
@@ -8,10 +8,9 @@ import { ExportToExcel } from 'components/ExportToExcel'
 import { useDataApi } from 'utils/data.hooks';
 import { deleteAllCookie } from 'utils/cookie';
 import AuthService from 'services/auth.service';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 export default function MachineDate() {
-	
 	const [current, setCurrent] = useState(1);
 	const [form] = Form.useForm();
 
@@ -22,19 +21,24 @@ export default function MachineDate() {
 	const router = useRouter();
 	useEffect(() => {
 		const authorized = AuthService.isAuthorized('/machine-data');
-		if(!authorized) {
+		if (!authorized) {
 			deleteAllCookie();
 			router.push('/login');
 		}
-		console.log('authorized', authorized);
-	})
+		console.log('==============current', current);
+	},[current])
 
 	const url = 'api/v1/machines/data';
 	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, query);
-	const [{ data: all_data, isError: isError2 }, doFetch2] = useDataApi(url);
 
+	const [{ data: all_data, isError: isError2 }, doFetch2] = useDataApi(url);
 	// mock data 
 	const columns = [
+		{
+			title: 'Serial number',
+			key: 'index',
+			render:(value, item, index) => ((current - 1) * 12 + index+1)
+		},
 		{
 			title: 'Machine No',
 			dataIndex: 'machine_no',
@@ -57,13 +61,13 @@ export default function MachineDate() {
 		},
 	];
 
-	
+
 	const state = {
 		bordered: false,
 		loading: false,
 		pagination: { position: 'bottom' },
 		size: 'default',
-		title: undefined,
+		title: () => `${meta?.count} Items found`,
 		showHeader: true,
 		scroll: undefined,
 		hasData: true,
@@ -87,7 +91,10 @@ export default function MachineDate() {
 	];
 
 	const PageChange = (current, page_size) => {
-		setQuery({ ...query, page: current})
+		console.log('current',current);
+		console.log('page size',page_size);
+		setCurrent(current);
+		setQuery({ ...query, page: current })
 		doFetch({ ...query, page: current });
 	}
 
@@ -102,9 +109,14 @@ export default function MachineDate() {
 				params.machine_no = numbers;
 			}
 			values?.machine_status && (params.machine_status = values?.machine_status);
+			
+			if(!params?.start && !params?.end && !params?.machine_no && !params?.machine_status ){
+				return;
+			}
+			setCurrent(1);
+			params.page = 1;
 			setQuery({ ...query, ...params });
-			params.page=1;
-			doFetch({...params });
+			doFetch({ ...params });
 		};
 
 		function onOk(value) {
@@ -199,8 +211,7 @@ export default function MachineDate() {
 							}}
 						>
 							Clear
-						</Button>	
-						<ExportToExcel apiData={data} fileName={'machine-list'} />
+						</Button>
 					</Col>
 				</Row>
 			</Form>
@@ -214,10 +225,13 @@ export default function MachineDate() {
 				title="Machine Data"
 				breadcrumb={{ routes }}
 				subTitle=""
+				extra={[
+					<ExportToExcel query={query} meta={meta} fileName={'machine-list'} />
+				]}
 			/>
 
 			<AdvancedSearchForm />
-			<Spin spinning={isLoading} size={'default'} className={`bg-white m-`}>
+			<Spin spinning={isLoading} size={'default'} className={`bg-white`}>
 				{
 					isError ?
 						<Alert
@@ -231,13 +245,16 @@ export default function MachineDate() {
 						data?.length ?
 							<Table
 								{...state}
-								key={'total_minutes'}
+								key={'index'}
 								pagination={{
 									position: [state.top, state.bottom],
 									onChange: PageChange,
 									pageSize: meta?.page_size,
+									showSizeChanger:false,
+									showTotal:(total, range) => (`${range[0]}-${range[1]} of ${total} items`),
 									total: meta?.count | 0,
-									defaultCurrent: current | 1
+									defaultCurrent: 1,
+									current:current
 								}}
 								columns={tableColumns}
 								dataSource={data || []}
