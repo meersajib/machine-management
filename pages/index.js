@@ -75,7 +75,7 @@ export default function Index() {
 
 	return (
 		<div className='h-screen'>
-			{!noData ? <Fragment style={{alignItems: 'center'}}>
+			{!noData ? <div style={{alignItems: 'center'}}>
 				{machineList?.length ? (
 				<MqttComponent setStatus={setStatus} machineList={machineList} />
 			) : (
@@ -88,7 +88,7 @@ export default function Index() {
 				<img style={{margin: '0 auto'}} src='spinner.png' />
 				 </div>
 			)}
-			</Fragment> : <Empty /> }
+			</div> : <Empty /> }
 		</div>
 	);
 }
