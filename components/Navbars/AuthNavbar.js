@@ -1,24 +1,51 @@
 import React, { useState } from 'react';
 import UserDropdown from 'components/Dropdowns/UserDropDown';
+import { useStatus } from 'Context/StatusContext';
+import { Button } from 'antd';
+import Link from 'next/link'
+
+
 
 export default function Navbar(props) {
   const { setNavbarOpen, navbarOpen } = props;
-
+  const { connected } = useStatus()
   return (
     <>
-      <nav className='top-0 sticky z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg' style={{backgroundColor: '#000000'}}>
-        <div className='w-full px-4 mx-auto flex flex-wrap items-center justify-between'>
-          <div>
+            <nav className="top-0 bg-black z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg">
+        <div className="container px-4 ml-auto mr-0 flex flex-wrap items-center justify-between">
+          <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
             <button
-              className='cursor-pointer text-xl leading-none px-1 rounded bg-transparent block outline-none focus:outline-none'
-              type='button'
-              onClick={() => setNavbarOpen(!navbarOpen)}>
-              <i className='text-white fas fa-bars'></i>
+              className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
+              type="button"
+              onClick={() => setNavbarOpen(!navbarOpen)}
+            >
+              <i className="text-white fas fa-bars"></i>
             </button>
           </div>
-
-          <div>
-            <UserDropdown />
+          <div
+            className={
+              "lg:flex flex-grow items-center bg-white lg:bg-opacity-0 lg:shadow-none" +
+              (navbarOpen ? " block rounded shadow-lg" : " hidden")
+            }
+            id="example-navbar-warning"
+          >
+            <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
+              <li className="flex items-center">
+                {/* <PagesDropdown /> */}
+              </li>
+              
+              <li className="flex items-center">
+                <button
+                  className="bg-white text-blueGray-700 active:bg-blueGray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+                  type="button"
+                >
+                  {connected ? `Connected` : `Not Connected`}
+                </button>
+              </li>
+              <li className="flex items-center">
+                 <UserDropdown />
+              </li>
+            </ul>
           </div>
         </div>
       </nav>

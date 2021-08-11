@@ -5,7 +5,8 @@ import MachineService from 'services/machine.service';
 import { getCookie,deleteAllCookie } from 'utils/cookie';
 import { Spin } from 'antd';
 import { useRouter } from 'next/router';
-import { useDataApi } from 'utils/data.hooks';
+import { Empty } from 'antd';
+
 
 
 
@@ -14,15 +15,20 @@ import { useDataApi } from 'utils/data.hooks';
 
 import Admin from 'layouts/Admin.js';
 import MqttComponent from 'components/MqttComponent';
+import { useStatus } from 'Context/StatusContext';
 
 export default function Index() {
 	const token = getCookie('mctoken');
 	const [machineList, setMachineList] = useState([]);
 	const [spinner, setSpinner] = useState(true);
+	const [noData, setNoData] = useState(false)
+	const [status,setStatus] = useState(false)
+
 	
 
 
 	const router = useRouter();
+  const {setConnected} = useStatus()
 	useEffect(() => {
 		const authorized = AuthService.isAuthorized('/');
 		if (!authorized) {
@@ -47,20 +53,31 @@ export default function Index() {
 				error?.response?.data?.message ||
 				'Something went working! please try again.';
 			console.log('error message ', msg);
+
+			setNoData(true)
+			if (msg == `Signature has expired.`) {
 			deleteAllCookie();
 			router.push('/login');
+			}
 		}
 	}
 
 	useEffect(async () => {
 		fetchData()
 	}, []);
+ 
 
+	if (status) {
+		setConnected(true)
+	} else {
+		setConnected(false)
+	}
 
 	return (
 		<div className='h-screen'>
-			{machineList?.length ? (
-				<MqttComponent machineList={machineList} />
+			{!noData ? <Fragment style={{alignItems: 'center'}}>
+				{machineList?.length ? (
+				<MqttComponent setStatus={setStatus} machineList={machineList} />
 			) : (
 					<div style={{
 						display: 'grid',
@@ -68,9 +85,10 @@ export default function Index() {
 						alignItems: 'center',
 						justifyContent: 'center'
 				}}>
-				<img src='spinner.png' />
+				<img style={{margin: '0 auto'}} src='spinner.png' />
 				 </div>
 			)}
+			</Fragment> : <Empty /> }
 		</div>
 	);
 }

@@ -4,6 +4,7 @@ import 'antd/dist/antd.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'styles/tailwind.css';
 import 'styles/global.css';
+import { StatusProvider } from 'Context/StatusContext';
 
 // Router.events.on('routeChangeStart', () => {
 //   ReactDOM.render(
@@ -34,10 +35,11 @@ function MyApp({ Component, pageProps }) {
 					/>
 					<title>Machine Management</title>
 				</Head>
+				<StatusProvider>
 					<Layout>
 						<Component {...pageProps} />
 					</Layout>
-
+					</StatusProvider>
 			</React.Fragment>
 		);
 }

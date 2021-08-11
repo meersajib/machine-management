@@ -34,3 +34,9 @@ display: grid;
   background-color: rgb(207 226 243);
   color: #000;
 }
+
+@media (max-width: 600px){
+  .grid_container{
+    grid-template-columns: 1fr;
+  }
+}
