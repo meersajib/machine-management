@@ -53,7 +53,12 @@ export default function Index() {
 				error?.response?.data?.message ||
 				'Something went working! please try again.';
 			console.log('error message ', msg);
+
 			setNoData(true)
+			if (msg == `Signature has expired.`) {
+			deleteAllCookie();
+			router.push('/login');
+			}
 		}
 	}
 
@@ -62,7 +67,6 @@ export default function Index() {
 	}, []);
  
 
-	console.log('statusssssssssssss', status)
 	if (status) {
 		setConnected(true)
 	} else {
