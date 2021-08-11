@@ -43,7 +43,8 @@ export default function Index() {
         error?.response?.data?.message ||
         'Something went working! please try again.';
       console.log('error message ', msg);
-      setNoData(true)
+      deleteAllCookie();
+			router.push('/login');
 
     }
   }, []);
