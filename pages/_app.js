@@ -35,13 +35,12 @@ function MyApp({ Component, pageProps }) {
 					/>
 					<title>Machine Management</title>
 					<link rel="icon" href="/logo.png" type="image/gif" sizes="16x16" />
-
 				</Head>
 				<StatusProvider>
 					<Layout>
 						<Component {...pageProps} />
 					</Layout>
-					</StatusProvider>
+				</StatusProvider>
 			</React.Fragment>
 		);
 }

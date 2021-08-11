@@ -67,11 +67,13 @@ export default function Index() {
 	}, []);
  
 
+useEffect(() => {
 	if (status) {
-		setConnected(true)
+		setConnected(status)
 	} else {
-		setConnected(false)
+		setConnected(!status)
 	}
+}, [])
 
 	return (
 		<div className='h-screen'>
