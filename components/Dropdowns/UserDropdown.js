@@ -53,7 +53,7 @@ export default function UserDropdown() {
             leaveTo='transform opacity-0 scale-95'>
             <Menu.Items
               static
-              className='origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none'>
+              className='origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50'>
               <div className='py-1'>
                 <form method='POST' action='#'>
                   <Menu.Item>
