@@ -50,11 +50,13 @@ export default function Index() {
   }, []);
   
 
-  if (status) {
+  useEffect(() => {
+    if (status) {
     setConnected(true);
   } else {
     setConnected(false)
   }
+},[])
 
 
   return (
