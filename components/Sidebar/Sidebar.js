@@ -86,7 +86,7 @@ export default function Sidebar(props) {
               </li>
 
               <li className='items-center'>
-                <Link href='machine-data'>
+                <Link href='/machine-data'>
                   <a
                     className={
                       'text-xs uppercase py-3 font-bold block ' +
@@ -107,7 +107,7 @@ export default function Sidebar(props) {
               </li>
 
               <li className='items-center'>
-                <Link href='analytics'>
+                <Link href='/analytics'>
                   <a
                     className={
                       'text-xs uppercase py-3 font-bold block ' +
@@ -128,7 +128,7 @@ export default function Sidebar(props) {
               </li>
 
               <li className='items-center'>
-                <Link href='offline-online-devices'>
+                <Link href='/offline-online-devices'>
                   <a
                     className={
                       'text-xs uppercase py-3 font-bold block ' +

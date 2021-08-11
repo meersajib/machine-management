@@ -65,6 +65,7 @@ class MqttSerailPort extends Component {
 };
 
   componentWillUnmount() {
+    this._isMounted = false;
     if (this.client) {
       this.client.end()
     }
