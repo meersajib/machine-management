@@ -35,7 +35,7 @@ class MqttComponent extends Component {
       this.client.subscribe('machine/+');
     });
     this.client.on('message', (topic, message) => {
-      let time = new Date().toLocaleString(undefined, {
+      let time = new Date().toLocaleString({
         day:    'numeric',
         month:  'numeric',
         year:   'numeric',

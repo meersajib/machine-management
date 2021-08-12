@@ -2,7 +2,6 @@ import { Form, Space, Spin, Row, Col, Button, PageHeader, Alert, Empty } from 'a
 import Admin from 'layouts/Admin.js';
 import { useState, useEffect } from 'react';
 import { Select } from 'antd';
-const { Option } = Select;
 import { DatePicker } from 'antd';
 import { useDataApi } from 'utils/data.hooks';
 import { useRouter } from 'next/router';
@@ -13,6 +12,7 @@ import CardMachineEfficiency from "components/Cards/CardMachineEfficiency.js";
 import AuthService from 'services/auth.service';
 import { deleteAllCookie } from 'utils/cookie';
 export default function Analytics() {
+	const { Option } = Select;
 	const [form] = Form.useForm();
 	const [form2] = Form.useForm();
 	const [start, setStart] = useState('');

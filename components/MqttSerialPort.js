@@ -47,7 +47,6 @@ class MqttSerailPort extends Component {
       .filter((num) => num.machine_no == machine_no)
       .map((machine_item) => {
         machine_item.status = message;
-        machine_item.update_time = time;
       });
       this.setState({ machines: this.props.machineList });
     }

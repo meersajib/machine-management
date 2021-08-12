@@ -148,7 +148,6 @@ export default function Sidebar(props) {
                   </a>
                 </Link>
               </li>
-
               {groups?.includes('Maintainer') ? (
                 <li className='items-center'>
                   <Link href='parameter-data'>
