@@ -61,7 +61,7 @@ class MqttSerailPort extends Component {
   });
     setTimeout(() => {
   this.setState({initialConnection: false})
-}, 3);
+}, 3000);
 };
 
   componentWillUnmount() {

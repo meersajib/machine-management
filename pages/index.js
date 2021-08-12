@@ -73,7 +73,7 @@ useEffect(() => {
 	} else {
 		setConnected(false)
 	}
-}, [status])
+}, [])
 
 	return (
 		<div className='h-screen'>

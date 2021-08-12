@@ -76,7 +76,7 @@ openNotificationWithIcon = type => {
   });
   setTimeout(() => {
   this.setState({initialConnection: false})
-}, 3);
+}, 3000);
 };
 
 
