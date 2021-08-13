@@ -59,12 +59,13 @@ export default function Index() {
  
 
 useEffect(() => {
-	if (status) {
+		if (status) {
 		setConnected(true)
 	} else {
 		setConnected(false)
 	}
-}, [])
+}, [status])
+	
 
 	return (
 		<div className='min-h-screen'>

@@ -52,7 +52,7 @@ export default function Index() {
   } else {
     setConnected(false)
   }
-},[])
+},[status])
 
 
   return (

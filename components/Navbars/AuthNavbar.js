@@ -8,7 +8,7 @@ import { useStatus } from 'Context/StatusContext';
 export default function Navbar(props) {
   const { setNavbarOpen, navbarOpen } = props;
   const { connected } = useStatus()
-  return (
+  return (console.log('connectedconnectedconnected',connected),
     <>
             <nav className="top-0 bg-black z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg">
         <div className="container px-4 ml-auto mr-0 flex flex-wrap items-center justify-between">
