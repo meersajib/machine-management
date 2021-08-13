@@ -67,7 +67,7 @@ useEffect(() => {
 }, [])
 
 	return (
-		<div className='h-screen'>
+		<div className='min-h-screen'>
 			{!noData ? <div style={{alignItems: 'center'}}>
 				{machineList?.length ? (
 				<MqttComponent setStatus={setStatus} machineList={machineList} />
