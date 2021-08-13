@@ -25,7 +25,7 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 				const result = await axios.get(`${host}/${url}`, {
 					headers: {
 						authorization: 'jwt ' + token,
-						'Access-Control-Allow-Origin': '*',
+						// 'Access-Control-Allow-Origin': '*',
 					},
 					params: query
 				});

@@ -8,7 +8,7 @@ export default class AuthService {
 			data,
 			{
 				headers: {
-					'Access-Control-Allow-Origin': '*',
+					// 'Access-Control-Allow-Origin': '*',
 				},
 			}
 		);
