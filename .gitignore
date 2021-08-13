@@ -28,3 +28,7 @@ package-lock.json
 out/
 
 commit.sh
+
+.env
+.idea
+.vscode
