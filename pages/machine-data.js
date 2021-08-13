@@ -12,27 +12,28 @@ import { useRouter } from 'next/router';
 
 export default function MachineDate() {
 	const [current, setCurrent] = useState(1);
-	const [form] = Form.useForm();
-
 	const [start, setStart] = useState('');
 	const [end, setEnd] = useState('');
 	const [query, setQuery] = useState({});
 
+	const [form] = Form.useForm();
 	const router = useRouter();
+
 	useEffect(() => {
 		const authorized = AuthService.isAuthorized('/machine-data');
 		if (!authorized) {
 			deleteAllCookie();
 			router.push('/login');
 		}
-		console.log('==============current', current);
 	},[current])
 
 	const url = 'api/v1/machines/data';
 	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, query);
 
+	//fetch all machines for select list
 	const [{ data: all_data, isError: isError2 }, doFetch2] = useDataApi(url);
-	// mock data 
+	
+	// table colums 
 	const columns = [
 		{
 			title: 'Serial number',
@@ -62,6 +63,7 @@ export default function MachineDate() {
 	];
 
 
+	//table config settings
 	const state = {
 		bordered: false,
 		loading: false,
@@ -79,6 +81,7 @@ export default function MachineDate() {
 	const tableColumns = columns.map(item => ({ ...item, ellipsis: true }));
 
 
+	//breadcrumb routes
 	const routes = [
 		{
 			path: '/',
@@ -90,14 +93,14 @@ export default function MachineDate() {
 		},
 	];
 
+	// page change event
 	const PageChange = (current, page_size) => {
-		console.log('current',current);
-		console.log('page size',page_size);
 		setCurrent(current);
 		setQuery({ ...query, page: current })
 		doFetch({ ...query, page: current });
 	}
 
+	// search form 
 	const AdvancedSearchForm = () => {
 
 		const onFinish = (values) => {
@@ -119,10 +122,7 @@ export default function MachineDate() {
 			doFetch({ ...params });
 		};
 
-		function onOk(value) {
-			// console.log('onOk: ', value);
-		}
-
+		//select options for machine number filtering
 		const children = [];
 		if (!isError2) {
 			let unique_machine_no = all_data?.map(m => m?.machine_no)?.filter((v, i, a) => a?.indexOf(v) === i);
@@ -135,6 +135,7 @@ export default function MachineDate() {
 			}
 
 		}
+
 		return (
 			<Form
 				form={form}
@@ -147,13 +148,13 @@ export default function MachineDate() {
 						name={`start`}
 						label={`Start`}
 					>
-						<DatePicker showTime onChange={(value, dateString) => { setStart(dateString) }} onOk={onOk} />
+						<DatePicker showTime onChange={(value, dateString) => { setStart(dateString) }} />
 					</Form.Item>
 					<Form.Item
 						name={`end`}
 						label={`end`}
 					>
-						<DatePicker showTime onChange={(value, dateString) => { setEnd(dateString) }} onOk={onOk} />
+						<DatePicker showTime onChange={(value, dateString) => { setEnd(dateString) }} />
 					</Form.Item>
 
 					<Form.Item

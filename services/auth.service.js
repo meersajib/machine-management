@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { deleteCookie, saveCookie,getCookie } from 'utils/cookie';
 export default class AuthService {
+	
 	static async validate(data) {
 		const response = await axios.post(
-			`http://172.104.163.254:8000/api/v1/users/token/`,
+			`${process.env.NEXT_PUBLIC_HOST}/api/v1/users/token/`,
 			data,
 		);
-		console.log('response in service', response);
 		return response?.data;
 	}
 

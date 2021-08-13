@@ -10,23 +10,23 @@ import { deleteAllCookie } from 'utils/cookie';
 
 export default function OfflineOnlineDevices() {
 	const [current, setCurrent] = useState(1);
-	const [form] = Form.useForm();
 	const [query, setQuery] = useState('offline');
+	const [form] = Form.useForm();
 
 	const router = useRouter();
+
 	useEffect(() => {
 		const authorized = AuthService.isAuthorized('/offline-online-devices');
 		if(!authorized) {
 			deleteAllCookie();
 			router.push('/login');
 		}
-		console.log('authorized', authorized);
 	})
 
 	const url = 'api/v1/machines/data';
 	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, {status:query});
 
-	// mock data 
+	// table columns
 	const columns = [
 		{
 			title: 'Machine No',
@@ -42,6 +42,7 @@ export default function OfflineOnlineDevices() {
 		}
 	];
 
+	//table config
 	const state = {
 		bordered: false,
 		loading: false,
@@ -58,6 +59,7 @@ export default function OfflineOnlineDevices() {
 
 	const tableColumns = columns.map(item => ({ ...item, ellipsis: true }));
 
+	//breadcrumb
 	const routes = [
 		{
 			path: '/',
@@ -75,6 +77,7 @@ export default function OfflineOnlineDevices() {
 	}
 
 	const AdvancedSearchForm = () => {
+
 		const onSelectChange = (value) => {
 			const params = {};
 			value && (params.status = value);
@@ -89,6 +92,7 @@ export default function OfflineOnlineDevices() {
 				form={form}
 				name="advanced_search"
 				className="bg-white p-3 mb-3 mt-3"
+				initialValues={{status: query}}
 			>
 				<Space direction='horizontal' size={12} wrap={true} >
 					<Form.Item
@@ -99,7 +103,6 @@ export default function OfflineOnlineDevices() {
 							style={{ width: 150 }}
 							className='min-width-10'
 							onChange={(value)=>onSelectChange(value)}
-							defaultValue={query}
 						>
 							<Option value={'online'} key={'online'}>Online</Option>
 							<Option value={'offline'} key={'offline'}>Offline</Option>

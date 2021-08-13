@@ -16,7 +16,6 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 	const host = process.env.NEXT_PUBLIC_HOST;
 
 	useEffect(() => {
-		console.log('query in hooks-----',query);
 		const token = getCookie('mctoken', null);
 
 		const fetchData = async () => {
@@ -29,16 +28,13 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 					},
 					params: query
 				});
-				// setData(result?.data);
-				console.log('result', result);
 				result?.data?.data && setData(result?.data?.data);
 				result?.data?.meta_data && setMeta(result?.data?.meta_data);
 
 			} catch (error) {
 				setIsError(true);
 				setError(error?.response?.data?.message);
-
-				console.log('error in data hooks000', error?.response?.status);
+				
 				if(error?.response?.status==403){
 					deleteAllCookie();
 					router.push('/login');

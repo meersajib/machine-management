@@ -3,8 +3,6 @@ export default class MachineService {
   
 	static async getMachineList(token, url) {
 		const host = process.env.NEXT_PUBLIC_HOST;
-		console.log('mamuuuuuuuuuuun',host)
-
 		
     const response = await axios.get(`${host}/${url}`,
       {

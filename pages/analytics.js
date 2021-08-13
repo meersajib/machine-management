@@ -13,21 +13,21 @@ import CardMachineEfficiency from "components/Cards/CardMachineEfficiency.js";
 import AuthService from 'services/auth.service';
 import { deleteAllCookie } from 'utils/cookie';
 export default function Analytics() {
-	const [form] = Form.useForm();
-	const [form2] = Form.useForm();
 	const [start, setStart] = useState('');
 	const [end, setEnd] = useState('');
 	const [query, setQuery] = useState({});
 	const [query3, setQuery3] = useState({});
 
+	const [form] = Form.useForm();
+	const [form2] = Form.useForm();
 	const router = useRouter();
+
 	useEffect(() => {
 		const authorized = AuthService.isAuthorized('/analytics');
 		if (!authorized) {
 			deleteAllCookie();
 			router.push('/login');
 		}
-		console.log('authorized', authorized);
 	})
 
 
@@ -152,7 +152,6 @@ export default function Analytics() {
 	const onEffecientFilter = (values) => {
 		let params = {};
 		values?.order && (params.order = values?.order);
-		console.log('params', params);
 		setQuery3({...params });
 		doFetch3({ ...params });
 	}
