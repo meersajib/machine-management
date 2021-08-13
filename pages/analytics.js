@@ -6,6 +6,7 @@ import { DatePicker } from 'antd';
 import { useDataApi } from 'utils/data.hooks';
 import { useRouter } from 'next/router';
 
+
 import CardBarChart from "components/Cards/CardBarChart.js";
 import CardPieChart from "components/Cards/CardPieChart.js";
 import CardMachineEfficiency from "components/Cards/CardMachineEfficiency.js";
@@ -16,7 +17,7 @@ export default function Analytics() {
 	const [end, setEnd] = useState('');
 	const [query, setQuery] = useState({});
 	const [query3, setQuery3] = useState({});
-
+    const { Option } = Select;
 	const [form] = Form.useForm();
 	const [form2] = Form.useForm();
 	const router = useRouter();
