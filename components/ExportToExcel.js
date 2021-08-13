@@ -13,8 +13,7 @@ export const ExportToExcel = ({ fileName, query={}, meta }) => {
 		doFetch({ ...query, page_size: meta?.count,page:1 })
 	},[meta])
 
-	const fileType =
-		"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+	const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
 	const fileExtension = ".xlsx";
 
 	const exportToCSV = (apiData,fileName) => {

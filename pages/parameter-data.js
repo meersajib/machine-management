@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import AuthService from 'services/auth.service';
 import MachineService from 'services/machine.service';
 import { getCookie,deleteAllCookie } from 'utils/cookie';
-import { Spin } from 'antd';
 import { useRouter } from 'next/router';
 import { Empty } from 'antd';
 
@@ -43,17 +42,20 @@ export default function Index() {
         error?.response?.data?.message ||
         'Something went working! please try again.';
       console.log('error message ', msg);
-      setNoData(true)
+      deleteAllCookie();
+			router.push('/login');
 
     }
   }, []);
   
 
-  if (status) {
+  useEffect(() => {
+    if (status) {
     setConnected(true);
   } else {
     setConnected(false)
   }
+},[])
 
 
   return (

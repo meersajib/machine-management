@@ -3,7 +3,6 @@ import React, { useState, useEffect, Fragment } from 'react';
 import AuthService from 'services/auth.service';
 import MachineService from 'services/machine.service';
 import { getCookie,deleteAllCookie } from 'utils/cookie';
-import { Spin } from 'antd';
 import { useRouter } from 'next/router';
 import { Empty } from 'antd';
 
@@ -59,16 +58,17 @@ export default function Index() {
 	}, []);
  
 
+useEffect(() => {
 	if (status) {
 		setConnected(true)
 	} else {
 		setConnected(false)
 	}
+}, [])
 
 	return (
 		<div className='h-screen'>
-			{!noData ? 
-			<div style={{alignItems: 'center'}}>
+			{!noData ? <div style={{alignItems: 'center'}}>
 				{machineList?.length ? (
 				<MqttComponent setStatus={setStatus} machineList={machineList} />
 			) : (

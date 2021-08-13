@@ -2,7 +2,6 @@ import { Form, Space, Spin, Row, Col, Button, PageHeader, Alert, Empty } from 'a
 import Admin from 'layouts/Admin.js';
 import { useState, useEffect } from 'react';
 import { Select } from 'antd';
-const { Option } = Select;
 import { DatePicker } from 'antd';
 import { useDataApi } from 'utils/data.hooks';
 import { useRouter } from 'next/router';

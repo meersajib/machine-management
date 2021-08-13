@@ -34,12 +34,13 @@ function MyApp({ Component, pageProps }) {
 						content='width=device-width, initial-scale=1, shrink-to-fit=no'
 					/>
 					<title>Machine Management</title>
+					<link rel="icon" href="/logo.png" type="image/gif" sizes="16x16" />
 				</Head>
 				<StatusProvider>
 					<Layout>
 						<Component {...pageProps} />
 					</Layout>
-					</StatusProvider>
+				</StatusProvider>
 			</React.Fragment>
 		);
 }
