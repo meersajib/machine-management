@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getCookie,deleteAllCookie } from 'utils/cookie';
+import { getCookie, deleteAllCookie } from 'utils/cookie';
 import { useRouter } from 'next/router';
 
 export const useDataApi = (initialUrl, initialquery = {}) => {
@@ -24,7 +24,8 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 			try {
 				const result = await axios.get(`${host}/${url}`, {
 					headers: {
-						authorization: 'jwt ' + token
+						authorization: 'jwt ' + token,
+						'Access-Control-Allow-Origin': '*',
 					},
 					params: query
 				});
@@ -34,12 +35,12 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 			} catch (error) {
 				setIsError(true);
 				setError(error?.response?.data?.message);
-				
-				if(error?.response?.status==403){
+
+				if (error?.response?.status == 403) {
 					deleteAllCookie();
 					router.push('/login');
 				}
-				
+
 			}
 
 			setIsLoading(false);
@@ -48,5 +49,5 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 		fetchData();
 	}, [query]);
 
-	return [{ data,meta, isLoading, isError, error }, setQuery];
+	return [{ data, meta, isLoading, isError, error }, setQuery];
 };

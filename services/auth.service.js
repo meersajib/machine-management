@@ -6,6 +6,11 @@ export default class AuthService {
 		const response = await axios.post(
 			`${process.env.NEXT_PUBLIC_HOST}/api/v1/users/token/`,
 			data,
+			{
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+				},
+			}
 		);
 		return response?.data;
 	}

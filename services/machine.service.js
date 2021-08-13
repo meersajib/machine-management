@@ -8,6 +8,7 @@ export default class MachineService {
       {
 				headers: {
 					authorization: 'jwt ' + token,
+					'Access-Control-Allow-Origin': '*',
         },
       },
 		);
