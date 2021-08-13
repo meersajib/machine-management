@@ -6,10 +6,6 @@ import { getCookie,deleteAllCookie } from 'utils/cookie';
 import { useRouter } from 'next/router';
 import { Empty } from 'antd';
 
-
-
-
-
 // layout for page
 
 import Admin from 'layouts/Admin.js';
@@ -34,7 +30,6 @@ export default function Index() {
 			deleteAllCookie();
 			router.push('/login');
 		}
-		// console.log('authorized', authorized);
 	})
 	
 	const url = `api/v1/machines`;
@@ -48,10 +43,7 @@ export default function Index() {
 			setSpinner(false);
 
 		} catch (error) {
-			const msg =
-				error?.response?.data?.message ||
-				'Something went working! please try again.';
-			console.log('error message ', msg);
+			const msg = error?.response?.data?.message || 'Something went working! please try again.';
 
 			setNoData(true)
 			if (msg == `Signature has expired.`) {

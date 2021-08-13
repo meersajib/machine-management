@@ -29,7 +29,6 @@ export default function Index() {
 			deleteAllCookie();
 			router.push('/login');
     }
-    // console.log('authorized', authorized);
 	})
 
   useEffect(async () => {
@@ -39,9 +38,7 @@ export default function Index() {
       setSpinner(false);
     } catch (error) {
       const msg =
-        error?.response?.data?.message ||
-        'Something went working! please try again.';
-      console.log('error message ', msg);
+        error?.response?.data?.message || 'Something went working! please try again.';
       deleteAllCookie();
 			router.push('/login');
 

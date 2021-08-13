@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getCookie,deleteAllCookie } from 'utils/cookie';
+import { getCookie, deleteAllCookie } from 'utils/cookie';
 import { useRouter } from 'next/router';
 
 export const useDataApi = (initialUrl, initialquery = {}) => {
@@ -16,7 +16,6 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 	const host = process.env.NEXT_PUBLIC_HOST;
 
 	useEffect(() => {
-		console.log('query in hooks-----',query);
 		const token = getCookie('mctoken', null);
 
 		const fetchData = async () => {
@@ -25,12 +24,11 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 			try {
 				const result = await axios.get(`${host}/${url}`, {
 					headers: {
-						authorization: 'jwt ' + token
+						authorization: 'jwt ' + token,
+						'Access-Control-Allow-Origin': '*',
 					},
 					params: query
 				});
-				// setData(result?.data);
-				console.log('result', result);
 				result?.data?.data && setData(result?.data?.data);
 				result?.data?.meta_data && setMeta(result?.data?.meta_data);
 
@@ -38,12 +36,11 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 				setIsError(true);
 				setError(error?.response?.data?.message);
 
-				console.log('error in data hooks000', error?.response?.status);
-				if(error?.response?.status==403){
+				if (error?.response?.status == 403) {
 					deleteAllCookie();
 					router.push('/login');
 				}
-				
+
 			}
 
 			setIsLoading(false);
@@ -52,5 +49,5 @@ export const useDataApi = (initialUrl, initialquery = {}) => {
 		fetchData();
 	}, [query]);
 
-	return [{ data,meta, isLoading, isError, error }, setQuery];
+	return [{ data, meta, isLoading, isError, error }, setQuery];
 };
