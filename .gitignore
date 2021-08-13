@@ -31,4 +31,7 @@ commit.sh
 
 .env
 .idea
+.idea/
 .vscode
+.vscode/
+
