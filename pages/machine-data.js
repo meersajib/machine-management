@@ -32,12 +32,12 @@ export default function MachineDate() {
 
 	//fetch all machines for select list
 	const [{ data: all_data, isError: isError2 }, doFetch2] = useDataApi(url);
-	
+	data?.forEach((d,index)=>d.index=index);
 	// table colums 
 	const columns = [
 		{
 			title: 'Serial number',
-			key: 'index',
+			dataIndex: 'serial_no',
 			render:(value, item, index) => ((current - 1) * 12 + index+1)
 		},
 		{
@@ -246,7 +246,7 @@ export default function MachineDate() {
 						data?.length ?
 							<Table
 								{...state}
-								key={'index'}
+								rowKey={(record=>record.index)}
 								pagination={{
 									position: [state.top, state.bottom],
 									onChange: PageChange,

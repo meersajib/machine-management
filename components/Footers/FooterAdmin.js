@@ -18,17 +18,14 @@ export default function FooterAdmin() {
                 </a>
               </div>
             </div>
-            <div className="w-full md:w-4/12 px-4">
-              <ul className="flex flex-wrap list-none md:justify-end  justify-center">
-                <li>
+            <div className="w-full md:w-4/12 px-4 flex items-center justify-end">
+				Developed by
                   <a
-                    href="https://www.creative-tim.com?ref=nnjs-footer-admin"
+                    href="#"
                     className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
                   >
-                    Developed by incognito
+                     incognito
                   </a>
-                </li>
-              </ul>
             </div>
           </div>
         </div>

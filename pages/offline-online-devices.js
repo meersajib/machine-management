@@ -26,6 +26,7 @@ export default function OfflineOnlineDevices() {
 	const url = 'api/v1/machines/data';
 	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, {status:query});
 
+	data?.forEach((d,index)=>d.index=index);
 	// table columns
 	const columns = [
 		{
@@ -129,7 +130,7 @@ export default function OfflineOnlineDevices() {
 					data?.length ?
 						<Table
 							{...state}
-							key={(record=>record.index)}
+							rowKey={(record=>record.index)}
 							pagination={{
 								position: [state.top, state.bottom],
 								onChange: PageChange,
