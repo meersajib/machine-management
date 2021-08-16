@@ -9,6 +9,7 @@ import { useDataApi } from 'utils/data.hooks';
 import { deleteAllCookie } from 'utils/cookie';
 import AuthService from 'services/auth.service';
 import { useRouter } from 'next/router';
+import { dateString } from 'utils';
 
 export default function MachineDate() {
 	const [current, setCurrent] = useState(1);
@@ -51,10 +52,12 @@ export default function MachineDate() {
 		{
 			title: 'Start Time',
 			dataIndex: 'start',
+			render:(value, item, index) => dateString(new Date(value))
 		},
 		{
 			title: 'End Time',
 			dataIndex: 'end',
+			render:(value, item, index) => dateString(new Date(value))
 		},
 		{
 			title: 'Total Minutes',

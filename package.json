@@ -17,6 +17,7 @@
     "antd": "^4.16.9",
     "axios": "^0.21.1",
     "chart.js": "^3.5.0",
+    "chartjs-plugin-datalabels": "^2.0.0",
     "file-saver": "^2.0.5",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",

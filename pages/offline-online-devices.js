@@ -7,6 +7,7 @@ import { useDataApi } from 'utils/data.hooks';
 import { useRouter } from 'next/router';
 import AuthService from 'services/auth.service';
 import { deleteAllCookie } from 'utils/cookie';
+import { dateString } from 'utils';
 
 export default function OfflineOnlineDevices() {
 	const [current, setCurrent] = useState(1);
@@ -40,6 +41,7 @@ export default function OfflineOnlineDevices() {
 		{
 			title: 'Last Update',
 			dataIndex: 'end',
+			render:(value, item, index) => dateString(new Date(value))
 		}
 	];
 

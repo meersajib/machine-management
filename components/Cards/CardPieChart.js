@@ -1,6 +1,8 @@
 import React from "react";
 import Chart from 'chart.js/auto';
 import { dateString } from 'utils';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+Chart.register(ChartDataLabels);
 
 export default function CardPieChart({data}) {
 
@@ -11,17 +13,16 @@ export default function CardPieChart({data}) {
 		
 		const pie_data = {
 			labels: [
-				'Off Time',
-				'On Time'
+				'Total Off Time',
+				'Total On Time'
 			],
 			datasets: [{
-				label: 'Machines Efficiency',
 				data: [Number(data?.total_off_time || 0).toFixed(0), Number(data?.total_on_time || 0).toFixed(0)],
 				backgroundColor: [
 					'#FF0000',
 					'#008000',
 				],
-				hoverOffset: 4
+				
 			}]
 		};
 
@@ -32,13 +33,21 @@ export default function CardPieChart({data}) {
 				responsive: true,
 				plugins: {
 					legend: {
+						display:true,
 						position: 'top',
 					},
-					title: {
-						display: false
-					}
-				}
-			},
+					tooltip:{
+						enabled:false
+					},
+					datalabels: {
+						display: true,
+						formatter: (val, ctx) => {
+						  return ctx.chart.data.labels[ctx.dataIndex];
+						},
+						color: '#fff',
+					  },
+				},
+			}
 		};
 
     var ctx = document.getElementById("pie-chart").getContext("2d");

@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import Chart from 'chart.js/auto';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+Chart.register(ChartDataLabels);
 
 export default function CardBarChart({ data }) {
 	useEffect(() => {
-		const labels = data?.map(d => `m/c-${d?.machine_no} Effi: ${Number(d?.efficiency).toFixed(2)}`)
+		const labels = data?.map(d => `m/c-${d?.machine_no} Effi: ${Number(d?.efficiency).toFixed(2)}%`)
 		const ontime = data?.map(d => Number(d?.total_on_time).toFixed(0))
 		const offtime = data?.map(d => Number(d?.total_off_time).toFixed(0))
 
@@ -18,7 +20,7 @@ export default function CardBarChart({ data }) {
 						borderColor: "#fff",
 						data: ontime,
 						fill: false,
-						barThickness: 15,
+						barThickness: 20,
 					},
 					{
 						label: 'Off Time',
@@ -26,7 +28,7 @@ export default function CardBarChart({ data }) {
 						backgroundColor: "red",
 						borderColor: "#fff",
 						data: offtime,
-						barThickness: 15,
+						barThickness: 20,
 					},
 				],
 			},
@@ -49,9 +51,23 @@ export default function CardBarChart({ data }) {
 					labels: {
 						fontColor: "rgba(0,0,0,.4)",
 					},
-					align: "end",
+					align: "start",
 					position: "bottom",
-				}
+				},
+				plugins: {
+					datalabels: {
+					  align: 'end',
+					  anchor: 'end',
+					  
+					  font: function(context) {
+						var w = context.chart.width;
+						return {
+						  size: w < 512 ? 12 : 14,
+						  weight: 'bold',
+						};
+					  },
+					}
+				  },
 			},
 		};
 		let ctx = document.getElementById("bar-chart").getContext("2d");
