@@ -105,7 +105,7 @@ export default function Analytics() {
 
 					<Form.Item
 						name={`machine_no`}
-						label={`Mahine No`}
+						label={`Machine No`}
 					>
 						<Select
 							mode="multiple"

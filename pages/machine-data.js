@@ -162,7 +162,7 @@ export default function MachineDate() {
 
 					<Form.Item
 						name={`machine_no`}
-						label={`Mahine No`}
+						label={`Machine No`}
 					>
 						<Select
 							mode="multiple"
@@ -177,7 +177,7 @@ export default function MachineDate() {
 
 					<Form.Item
 						name={`machine_status`}
-						label={`Mahine Status`}
+						label={`Machine Status`}
 					>
 						<Select
 							allowClear
