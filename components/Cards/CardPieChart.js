@@ -6,11 +6,7 @@ Chart.register(ChartDataLabels);
 
 export default function CardPieChart({data}) {
 
-  React.useEffect(() => {
-
-		console.log('data in pie chart', data);
-		
-		
+  React.useEffect(() => {		
 		const pie_data = {
 			labels: [
 				'Total Off Time',
@@ -42,18 +38,24 @@ export default function CardPieChart({data}) {
 					datalabels: {
 						display: true,
 						formatter: (val, ctx) => {
-						  return ctx.chart.data.labels[ctx.dataIndex];
+							return val;
+						//   return ctx.chart.data.labels[ctx.dataIndex];
 						},
 						color: '#fff',
+						fontSize:25
 					  },
 				},
 			}
 		};
 
     var ctx = document.getElementById("pie-chart").getContext("2d");
-    window.myPie = new Chart(ctx, config);
+	if(data?.total_on_time && data?.total_off_time){
+		window.myPie = new Chart(ctx, config);
+	}
 		return () => {
-			window.myPie.destroy()
+			if(window.myPie){
+				window.myPie.destroy()
+			}
 		}
   }, [data]);
   return (

@@ -71,10 +71,15 @@ export default function CardBarChart({ data }) {
 			},
 		};
 		let ctx = document.getElementById("bar-chart").getContext("2d");
-		window.myBar = new Chart(ctx, config);
+		
+		if(data?.length){
+			window.myBar = new Chart(ctx, config);
+		}
 
 		return () => {
-			window.myBar.destroy()
+			if(window.myBar){
+				window.myBar.destroy()
+			}
 		}
 
 	}, [data]);

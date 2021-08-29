@@ -17,7 +17,7 @@ export default function Analytics() {
 	const [end, setEnd] = useState('');
 	const [query, setQuery] = useState({});
 	const [query3, setQuery3] = useState({});
-    const { Option } = Select;
+	const { Option } = Select;
 	const [form] = Form.useForm();
 	const [form2] = Form.useForm();
 	const router = useRouter();
@@ -28,13 +28,13 @@ export default function Analytics() {
 			deleteAllCookie();
 			router.push('/login');
 		}
-	})
+	},[])
 
 
 	const url = 'api/v1/machines/analytics';
 	const [{ data, meta, isLoading, isError, error }, doFetch] = useDataApi(url, query);
 	const [{ data: all_data, isError: isError2 }, doFetch2] = useDataApi(url);
-	const [{ data: effecient_data, isError: isError3,isLoading:isLoading3 }, doFetch3] = useDataApi(url);
+	const [{ data: effecient_data, isError: isError3, isLoading: isLoading3 }, doFetch3] = useDataApi(url);
 
 	const pie_url = 'api/v1/machines/total-analytics';
 	const [{ data: dataPie, isError: isErrorPie, isLoading: isLoadingPie }, doFetchPie] = useDataApi(pie_url, query);
@@ -152,7 +152,7 @@ export default function Analytics() {
 	const onEffecientFilter = (values) => {
 		let params = {};
 		values?.order && (params.order = values?.order);
-		setQuery3({...params });
+		setQuery3({ ...params });
 		doFetch3({ ...params });
 	}
 
@@ -169,16 +169,7 @@ export default function Analytics() {
 			<AdvancedSearchForm />
 
 			{
-				isError ?
-					<Alert
-						message="Error occured!"
-						description={error || 'Something went wrong!'}
-						type="error"
-						showIcon
-					/>
-					:
-
-					<>
+				<>
 						<Spin spinning={isLoading} size={'default'} className={`bg-white m-`}>
 							{data?.length ?
 								<div className="flex flex-wrap">
@@ -190,18 +181,12 @@ export default function Analytics() {
 						</Spin>
 
 						<Spin spinning={isLoadingPie} size={'default'} className={`bg-white m-`}>
-							{isErrorPie ?
-								<Alert
-									message="Error occured!"
-									description={error || 'Something went wrong!'}
-									type="error"
-									showIcon
-								/>
-								: <div className="flex flex-wrap">
+							{dataPie ?
+								<div className="flex flex-wrap">
 									<div className="w-full px-4">
 										<CardPieChart data={dataPie} />
 									</div>
-								</div>
+								</div>:  <Empty />
 							}
 						</Spin>
 
@@ -213,7 +198,7 @@ export default function Analytics() {
 							className="bg-white p-3 mb-3 mt-3"
 						>
 							<Space direction='horizontal' size={12} wrap={true} >
-								
+
 								<Form.Item
 									name={`order`}
 									label={`Sort by machine's efficiency`}
@@ -230,7 +215,7 @@ export default function Analytics() {
 								</Form.Item>
 
 								<Form.Item>
-								<Button className={'mr-2'} type="primary" htmlType="submit">
+									<Button className={'mr-2'} type="primary" htmlType="submit">
 										Search
 									</Button>
 									<Button
@@ -243,10 +228,10 @@ export default function Analytics() {
 										Clear
 									</Button>
 								</Form.Item>
-								
+
 							</Space>
 
-							
+
 						</Form>
 
 						<Spin spinning={isLoading3} size={'default'} className={`bg-white m-`}>
